@@ -1,0 +1,2339 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Type & Nervous System Diet Guide | Guía Nutricional por Tipo de Sangre</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            500: '#e11d48',
+                            600: '#e11d48',
+                            700: '#be123c',
+                            900: '#881337',
+                        },
+                        medicinal: '#10b981',
+                        neutral: '#f59e0b',
+                        avoid: '#ef4444'
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .dark .glass-card {
+            background: rgba(30, 41, 59, 0.85);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(156, 163, 175, 0.5);
+            border-radius: 9999px;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-200 flex flex-col font-sans">
+
+    <!-- Top Navigation Header -->
+    <header class="sticky top-0 z-40 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-700 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- App Logo & Title -->
+                <div class="flex items-center space-x-3">
+                    <div class="bg-gradient-to-tr from-brand-600 to-rose-400 text-white p-2.5 rounded-xl shadow-md shadow-rose-500/20">
+                        <i class="fa-solid fa-droplet text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="font-bold text-lg leading-none block text-slate-900 dark:text-white" id="app-title">Guía de Nutrición</span>
+                        <span class="text-xs text-brand-600 dark:text-rose-400 font-semibold uppercase tracking-wider" id="app-subtitle">Tipo de Sangre & Neurotipo</span>
+                    </div>
+                </div>
+
+                <!-- Right Side Actions (Lang switch, Theme, Quick Info) -->
+                <div class="flex items-center space-x-3 sm:space-x-4">
+                    <!-- Current Profile Pill -->
+                    <div class="hidden md:flex items-center space-x-2 bg-slate-100 dark:bg-slate-700/60 px-3 py-1.5 rounded-full text-xs font-medium">
+                        <span class="text-slate-500 dark:text-slate-400" id="lbl-header-profile">Perfil:</span>
+                        <span id="header-profile-badge" class="bg-brand-600 text-white px-2 py-0.5 rounded-full text-xs font-bold">Tipo O</span>
+                        <span id="header-ns-badge" class="bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-200 px-2 py-0.5 rounded-full text-xs">Pasivo</span>
+                    </div>
+
+                    <!-- Language Selector Toggle Button -->
+                    <div class="relative inline-block text-left">
+                        <button id="lang-btn" onclick="toggleLangMenu()" class="flex items-center space-x-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 px-3 py-1.5 rounded-lg text-xs font-semibold transition border border-slate-200 dark:border-slate-600">
+                            <span id="current-lang-flag">🇲🇽</span>
+                            <span id="current-lang-label">MX (ES)</span>
+                            <i class="fa-solid fa-chevron-down text-[10px] text-slate-400"></i>
+                        </button>
+                        <!-- Language Menu Dropdown -->
+                        <div id="lang-dropdown" class="hidden absolute right-0 mt-2 w-44 rounded-xl shadow-xl bg-white dark:bg-slate-800 ring-1 ring-black ring-opacity-5 z-50 overflow-hidden border border-slate-100 dark:border-slate-700">
+                            <div class="py-1">
+                                <button onclick="setLanguage('es')" class="w-full text-left px-4 py-2.5 text-xs font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700/60 flex items-center justify-between">
+                                    <span class="flex items-center space-x-2"><span>🇲🇽</span> <span>Español (MX)</span></span>
+                                    <i id="check-es" class="fa-solid fa-check text-brand-600 dark:text-rose-400"></i>
+                                </button>
+                                <button onclick="setLanguage('en')" class="w-full text-left px-4 py-2.5 text-xs font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700/60 flex items-center justify-between">
+                                    <span class="flex items-center space-x-2"><span>🇺🇸</span> <span>English (US)</span></span>
+                                    <i id="check-en" class="fa-solid fa-check text-brand-600 dark:text-rose-400 hidden"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dark Mode Toggle -->
+                    <button onclick="toggleDarkMode()" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-300 transition">
+                        <i class="fa-solid fa-moon dark:hidden"></i>
+                        <i class="fa-solid fa-sun hidden dark:block"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs Bar -->
+    <div class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <nav class="flex space-x-2 sm:space-x-8 overflow-x-auto py-2 scrollbar-none" id="nav-tabs">
+                <button onclick="switchTab('dashboard')" id="tab-btn-dashboard" class="nav-tab active-tab flex items-center space-x-2 px-3 py-2 text-sm font-semibold rounded-lg text-brand-600 dark:text-rose-400 bg-brand-50 dark:bg-slate-700/50 whitespace-nowrap">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span data-i18n="nav_dashboard">Panel General</span>
+                </button>
+                <button onclick="switchTab('search')" id="tab-btn-search" class="nav-tab flex items-center space-x-2 px-3 py-2 text-sm font-semibold rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white whitespace-nowrap">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <span data-i18n="nav_search">Buscador de Alimentos</span>
+                </button>
+                <button onclick="switchTab('suarez-tests')" id="tab-btn-suarez-tests" class="nav-tab flex items-center space-x-2 px-3 py-2 text-sm font-semibold rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white whitespace-nowrap">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                    <span data-i18n="nav_suarez_tests">Tests Frank Suárez</span>
+                </button>
+                <button onclick="switchTab('pam')" id="tab-btn-pam" class="nav-tab flex items-center space-x-2 px-3 py-2 text-sm font-semibold rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white whitespace-nowrap">
+                    <i class="fa-solid fa-book-medical"></i>
+                    <span data-i18n="nav_pam">Registro PAM</span>
+                </button>
+                <button onclick="switchTab('profile')" id="tab-btn-profile" class="nav-tab flex items-center space-x-2 px-3 py-2 text-sm font-semibold rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white whitespace-nowrap">
+                    <i class="fa-solid fa-sliders"></i>
+                    <span data-i18n="nav_profile">Mi Configuración</span>
+                </button>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Main Container Content -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- TAB 1: DASHBOARD -->
+        <section id="tab-dashboard" class="tab-content space-y-6">
+            <!-- Header Welcome Card -->
+            <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-rose-950 to-slate-900 text-white p-6 sm:p-8 shadow-xl">
+                <div class="absolute right-0 top-0 bottom-0 w-1/3 opacity-10 flex items-center justify-center pointer-events-none">
+                    <i class="fa-solid fa-heart-pulse text-[180px]"></i>
+                </div>
+                <div class="relative z-10 max-w-2xl">
+                    <span class="bg-rose-500/20 text-rose-300 border border-rose-500/30 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider inline-block mb-3" data-i18n="dash_welcome_badge">Resumen Personalizado</span>
+                    <h1 class="text-2xl sm:text-3xl font-extrabold mb-2" id="dash-greeting">Recomendaciones para Tipo de Sangre O</h1>
+                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed" id="dash-summary-desc">
+                        Optimiza tu metabolismo y niveles de energía consumiendo alimentos compatibles con tus lectinas sanguíneas y perfil nervioso.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Stats & Quick Profile Overview Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Active Config Card -->
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xs font-bold uppercase tracking-wider text-slate-400" data-i18n="dash_active_profile">Perfil Actual</span>
+                            <i class="fa-solid fa-user-gear text-slate-400"></i>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center pb-2 border-b border-slate-100 dark:border-slate-700">
+                                <span class="text-xs text-slate-500 dark:text-slate-400" data-i18n="lbl_blood_type">Tipo de Sangre</span>
+                                <span id="dash-blood-type" class="text-sm font-bold text-slate-900 dark:text-white bg-slate-100 dark:bg-slate-700 px-2.5 py-1 rounded-lg">Tipo O</span>
+                            </div>
+                            <div class="flex justify-between items-center pb-2 border-b border-slate-100 dark:border-slate-700">
+                                <span class="text-xs text-slate-500 dark:text-slate-400" data-i18n="lbl_nervous_system">Sistema Nervioso</span>
+                                <span id="dash-ns-type" class="text-sm font-bold text-slate-900 dark:text-white bg-slate-100 dark:bg-slate-700 px-2.5 py-1 rounded-lg">Pasivo</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs text-slate-500 dark:text-slate-400" data-i18n="dash_db_count">Total Alimentos Registrados</span>
+                                <span id="dash-total-foods" class="text-sm font-bold text-brand-600 dark:text-rose-400">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="switchTab('profile')" class="mt-4 w-full text-center py-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-xs font-bold rounded-xl transition text-slate-700 dark:text-slate-200" data-i18n="btn_edit_profile">
+                        Cambiar Configuración
+                    </button>
+                </div>
+
+                <!-- Food Breakdown Chart Card -->
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200 dark:border-slate-700 shadow-sm md:col-span-2 flex flex-col sm:flex-row items-center gap-6">
+                    <div class="w-full sm:w-1/2 h-48 relative">
+                        <canvas id="foodDistributionChart"></canvas>
+                    </div>
+                    <div class="w-full sm:w-1/2 space-y-3">
+                        <h3 class="text-sm font-bold text-slate-900 dark:text-white mb-2" data-i18n="dash_chart_title">Distribución Nutricional</h3>
+                        
+                        <div class="flex items-center justify-between p-2.5 bg-emerald-50 dark:bg-emerald-950/30 rounded-xl border border-emerald-100 dark:border-emerald-800/40">
+                            <div class="flex items-center space-x-2.5">
+                                <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                                <span class="text-xs font-semibold text-emerald-900 dark:text-emerald-300" data-i18n="cat_medicinal">Medicinales / Beneficiosos</span>
+                            </div>
+                            <span id="cnt-medicinal" class="text-xs font-bold text-emerald-700 dark:text-emerald-400">0</span>
+                        </div>
+
+                        <div class="flex items-center justify-between p-2.5 bg-amber-50 dark:bg-amber-950/30 rounded-xl border border-amber-100 dark:border-amber-800/40">
+                            <div class="flex items-center space-x-2.5">
+                                <div class="w-3 h-3 rounded-full bg-amber-500"></div>
+                                <span class="text-xs font-semibold text-amber-900 dark:text-amber-300" data-i18n="cat_neutral">Neutros</span>
+                            </div>
+                            <span id="cnt-neutral" class="text-xs font-bold text-amber-700 dark:text-amber-400">0</span>
+                        </div>
+
+                        <div class="flex items-center justify-between p-2.5 bg-rose-50 dark:bg-rose-950/30 rounded-xl border border-rose-100 dark:border-rose-800/40">
+                            <div class="flex items-center space-x-2.5">
+                                <div class="w-3 h-3 rounded-full bg-rose-500"></div>
+                                <span class="text-xs font-semibold text-rose-900 dark:text-rose-300" data-i18n="cat_avoid">Evitar</span>
+                            </div>
+                            <span id="cnt-avoid" class="text-xs font-bold text-rose-700 dark:text-rose-400">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Guidance & Key Recommendations -->
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
+                <div class="flex items-center space-x-3 pb-3 border-b border-slate-100 dark:border-slate-700">
+                    <div class="p-2 bg-brand-50 dark:bg-slate-700 rounded-lg text-brand-600 dark:text-rose-400">
+                        <i class="fa-solid fa-lightbulb text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold text-slate-900 dark:text-white" data-i18n="dash_guidance_title">Recomendaciones Clave de Tu Perfil</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="dash_guidance_subtitle">Principios generales basados en tu tipo de sangre y equilibrio nervioso</p>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="profile-tips-container">
+                    <!-- Dynamic tips injected here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: FOOD SEARCH ENGINE -->
+        <section id="tab-search" class="tab-content hidden space-y-6">
+            <!-- Search & Filter Control Bar -->
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
+                <div class="flex flex-col md:flex-row gap-3">
+                    <!-- Search Bar Input -->
+                    <div class="relative flex-1">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="text" id="food-search-input" oninput="renderFoodList()" placeholder="Buscar alimento (ej. Salmón, Aguacate, Linaza)..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-brand-500 text-xs sm:text-sm text-slate-800 dark:text-slate-100 transition">
+                    </div>
+
+                    <!-- Category Filter Dropdown -->
+                    <select id="filter-category" onchange="renderFoodList()" class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 text-xs text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-brand-500">
+                        <option value="ALL" data-i18n="opt_all_categories">Todas las Categorías</option>
+                    </select>
+
+                    <!-- Status Filter Dropdown -->
+                    <select id="filter-status" onchange="renderFoodList()" class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 text-xs text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-brand-500">
+                        <option value="ALL" data-i18n="opt_all_status">Todos los Estados</option>
+                        <option value="Medicinal" data-i18n="cat_medicinal">Medicinal / Beneficioso</option>
+                        <option value="Neutral" data-i18n="cat_neutral">Neutro</option>
+                        <option value="Avoid" data-i18n="cat_avoid">Evitar</option>
+                    </select>
+
+                    <button onclick="clearSearchFilters()" class="px-4 py-2.5 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-xs font-bold text-slate-600 dark:text-slate-300 rounded-xl transition whitespace-nowrap">
+                        <i class="fa-solid fa-filter-circle-xmark mr-1"></i>
+                        <span data-i18n="btn_clear_filters">Limpiar</span>
+                    </button>
+                </div>
+
+                <!-- Quick Filter Badges -->
+                <div class="flex flex-wrap items-center gap-2 pt-2 text-xs">
+                    <span class="text-slate-400 font-semibold" data-i18n="lbl_quick_filters">Filtros Rápidos:</span>
+                    <button onclick="setSearchFilter('Carne')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-700/60 hover:bg-slate-200 text-slate-700 dark:text-slate-300 rounded-lg text-[11px] font-medium transition" data-i18n="qf_meats">Carnes</button>
+                    <button onclick="setSearchFilter('Salmón')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-700/60 hover:bg-slate-200 text-slate-700 dark:text-slate-300 rounded-lg text-[11px] font-medium transition" data-i18n="qf_salmon">Salmón</button>
+                    <button onclick="setSearchFilter('Ajo')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-700/60 hover:bg-slate-200 text-slate-700 dark:text-slate-300 rounded-lg text-[11px] font-medium transition" data-i18n="qf_garlic">Ajo</button>
+                    <button onclick="setSearchFilter('Trigo')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-700/60 hover:bg-slate-200 text-slate-700 dark:text-slate-300 rounded-lg text-[11px] font-medium transition" data-i18n="qf_wheat">Trigo</button>
+                    <button onclick="setSearchFilter('Queso')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-700/60 hover:bg-slate-200 text-slate-700 dark:text-slate-300 rounded-lg text-[11px] font-medium transition" data-i18n="qf_dairy">Quesos / Lácteos</button>
+                </div>
+            </div>
+
+            <!-- Results Count & Active Profile Summary -->
+            <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 px-1">
+                <span>Resultados encontrados: <strong id="results-count" class="text-brand-600 dark:text-rose-400">0</strong></span>
+                <span>Filtro de Lectinas: <strong id="search-active-profile">Tipo O</strong></span>
+            </div>
+
+            <!-- Food Results Dynamic Grid -->
+            <div id="food-results-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Food items rendered dynamically -->
+            </div>
+        </section>
+
+        <!-- TAB 3: FRANK SUÁREZ METABOLIC TESTS & AGGRESSOR FOODS -->
+        <section id="tab-suarez-tests" class="tab-content hidden space-y-6">
+            <!-- Test Selector Cards / Tabs -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <!-- 1. NERVOUS SYSTEM QUIZ CARD -->
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm space-y-5">
+                    <div class="border-b border-slate-100 dark:border-slate-700 pb-3">
+                        <span class="bg-brand-100 dark:bg-brand-900/40 text-brand-700 dark:text-rose-300 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider inline-block mb-2">Test de Metabolismo</span>
+                        <h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+                            <i class="fa-solid fa-brain text-brand-600 dark:text-rose-400"></i>
+                            <span data-i18n="quiz_title">Test de Sistema Nervioso (5 Preguntas)</span>
+                        </h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1" data-i18n="quiz_desc">Cuestionario oficial de Frank Suárez para determinar si tu metabolismo es Pasivo o Excitado.</p>
+                    </div>
+
+                    <form id="quiz-form" onsubmit="submitNervousSystemQuiz(event)" class="space-y-4 text-xs">
+                        <!-- Question 1 -->
+                        <div class="p-3 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-100 dark:border-slate-700/60">
+                            <p class="font-semibold text-slate-800 dark:text-slate-200 mb-2" data-i18n="q1_text">1. ¿Tienes una digestión lenta o difícil cuando comes carne roja?</p>
+                            <div class="flex space-x-4">
+                                <label class="flex items-center space-x-1.5 cursor-pointer"><input type="radio" name="q1" value="1" required class="accent-brand-600"><span data-i18n="lbl_yes">Sí</span></label>
+                                <label class="flex items-center space-x-1.5 cursor-pointer"><input type="radio" name="q1" value="0" class="accent-brand-600" checked><span data-i18n="lbl_no">No</span></label>
+                            </div>
+                        </div>
+
+                        <!-- Question 2 -->
+                        <div class="p-3 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-100 dark:border-slate-700/60">
+                            <p class="font-semibold text-slate-800 dark:text-slate-200 mb-2" data-i18n="q2_text">2. ¿Las comidas grasosas o pesadas te caen mal o indigestan?</p>
+                            <div class="flex space-x-4">
+                                <label class="flex items-center space-x-1.5 cursor-pointer"><input type="radio" name="q2" value="1" required class="accent-brand-600"><span data-i18n="lbl_yes">Sí</span></label>
+                                <label class="flex items-center space-x-1.5 cursor-pointer"><input type="radio" name="q2" value="0" class="accent-brand-600" checked><span data-i18n="lbl_no">No</span></label>
+                            </div>
+                        </div>
+
+                        <!-- Question 3 -->
+                        <div class="p-3 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-100 dark:border-slate-700/60">
+                            <p class="font-semibold text-slate-800 dark:text-slate-200 mb-2" data-i18n="q3_text">3. ¿Tienes dificultad para conciliar el sueño después de cenar tarde?</p>
+                            <div class="flex space-x-4">
+                                <label class="flex items-center space-x-1.5 cursor-pointer"><input type="radio" name="q3" value="1" required class="accent-brand-600"><span data-i18n="lbl_yes">Sí</span></label>
+                                <label class="flex items-center space-x-1.5 cursor-pointer"><input type="radio" name="q3" value="0" class="accent-brand-600" checked><span data-i18n="lbl_no">No</span></label>
+                            </div>
+                        </div>
+
+                        <!-- Question 4 -->
+                        <div class="p-3 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-100 dark:border-slate-700/60">
+                            <p class="font-semibold text-slate-800 dark:text-slate-200 mb-2" data-i18n="q4_text">4. ¿Cenar tarde de noche alenta o perturba tu digestión?</p>
+                            <div class="flex space-x-4">
+                                <label class="flex items-center space-x-1.5 cursor-pointer"><input type="radio" name="q4" value="1" required class="accent-brand-600"><span data-i18n="lbl_yes">Sí</span></label>
+                                <label class="flex items-center space-x-1.5 cursor-pointer"><input type="radio" name="q4" value="0" class="accent-brand-600" checked><span data-i18n="lbl_no">No</span></label>
+                            </div>
+                        </div>
+
+                        <!-- Question 5 -->
+                        <div class="p-3 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-100 dark:border-slate-700/60">
+                            <p class="font-semibold text-slate-800 dark:text-slate-200 mb-2" data-i18n="q5_text">5. ¿Tienes un sueño liviano y te despiertas con cualquier ruido?</p>
+                            <div class="flex space-x-4">
+                                <label class="flex items-center space-x-1.5 cursor-pointer"><input type="radio" name="q5" value="1" required class="accent-brand-600"><span data-i18n="lbl_yes">Sí</span></label>
+                                <label class="flex items-center space-x-1.5 cursor-pointer"><input type="radio" name="q5" value="0" class="accent-brand-600" checked><span data-i18n="lbl_no">No</span></label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-md transition flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-calculator"></i>
+                            <span data-i18n="btn_calc_ns">Calcular Mi Sistema Nervioso</span>
+                        </button>
+                    </form>
+
+                    <!-- Quiz Result Display Box -->
+                    <div id="quiz-result-card" class="hidden p-4 rounded-xl border"></div>
+                </div>
+
+                <!-- 2. AGGRESSOR FOODS TESTING MODULE -->
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm space-y-5">
+                    <div class="border-b border-slate-100 dark:border-slate-700 pb-3">
+                        <span class="bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider inline-block mb-2">Alimentos Agresores (TAM)</span>
+                        <h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+                            <i class="fa-solid fa-stethoscope text-amber-500"></i>
+                            <span data-i18n="aggressors_title">Prueba de Pulso y Glucómetro</span>
+                        </h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1" data-i18n="aggressors_desc">Detecta sensibilidades al Trigo, Arroz, Maíz (TAM) u otros alimentos agresores mediante pulsaciones o nivel de glucosa.</p>
+                    </div>
+
+                    <!-- Test Type Selector Tabs -->
+                    <div class="flex rounded-xl bg-slate-100 dark:bg-slate-900 p-1 text-xs font-bold">
+                        <button onclick="switchAggressorTest('pulse')" id="btn-mode-pulse" class="flex-1 py-2 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm transition" data-i18n="tab_pulse_test">Prueba del Pulso</button>
+                        <button onclick="switchAggressorTest('glucose')" id="btn-mode-glucose" class="flex-1 py-2 rounded-lg text-slate-500 hover:text-slate-900 dark:hover:text-white transition" data-i18n="tab_glucose_test">Prueba de Glucosa</button>
+                    </div>
+
+                    <!-- Pulse Test Form -->
+                    <form id="pulse-test-form" onsubmit="submitPulseTest(event)" class="space-y-3 text-xs">
+                        <div>
+                            <label class="block font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-1" data-i18n="lbl_food_tested">Alimento Sospechoso</label>
+                            <input type="text" id="pulse-food" required placeholder="Ej. Tortilla de Maíz, Arroz blanco, Pan" class="w-full p-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-brand-500 text-slate-800 dark:text-slate-100">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-1" data-i18n="lbl_pulse_before">Pulso Reposo (ppm)</label>
+                                <input type="number" id="pulse-before" required min="40" max="200" placeholder="Ej. 70" class="w-full p-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
+                            </div>
+                            <div>
+                                <label class="block font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-1" data-i18n="lbl_pulse_after">Pulso Post-Alimento (ppm)</label>
+                                <input type="number" id="pulse-after" required min="40" max="200" placeholder="Ej. 76" class="w-full p-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
+                            </div>
+                        </div>
+
+                        <p class="text-[11px] text-slate-400" data-i18n="pulse_hint">💡 Si el pulso se eleva 4 o más pulsaciones por minuto (ppm) tras ingerir el alimento, se considera un alimento agresor.</p>
+
+                        <button type="submit" class="w-full py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl shadow-md transition" data-i18n="btn_eval_pulse">
+                            Evaluar Reacción de Pulso
+                        </button>
+                    </form>
+
+                    <!-- Glucometer Test Form -->
+                    <form id="glucose-test-form" onsubmit="submitGlucoseTest(event)" class="space-y-3 text-xs hidden">
+                        <div>
+                            <label class="block font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-1" data-i18n="lbl_food_tested">Alimento Sospechoso</label>
+                            <input type="text" id="glucose-food" required placeholder="Ej. Avena, Trigo, Pan dulce" class="w-full p-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-1" data-i18n="lbl_glucose_base">Glucosa Base (mg/dL)</label>
+                                <input type="number" id="glucose-base" required min="50" max="300" placeholder="Ej. 85" class="w-full p-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
+                            </div>
+                            <div>
+                                <label class="block font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-1" data-i18n="lbl_glucose_2h">Glucosa a las 2 hrs (mg/dL)</label>
+                                <input type="number" id="glucose-2h" required min="50" max="400" placeholder="Ej. 130" class="w-full p-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
+                            </div>
+                        </div>
+
+                        <p class="text-[11px] text-slate-400" data-i18n="glucose_hint">💡 Si la glucosa 2 horas después no regresa cerca de tu nivel base o supera los 130 mg/dL, tu cuerpo manifiesta estrés metabólico por ese alimento.</p>
+
+                        <button type="submit" class="w-full py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl shadow-md transition" data-i18n="btn_eval_glucose">
+                            Evaluar Medición de Glucosa
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- AGGRESSOR FOODS LOG & RESULTS TABLE -->
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 pb-3">
+                    <div>
+                        <h3 class="text-base font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+                            <i class="fa-solid fa-triangle-exclamation text-rose-500"></i>
+                            <span data-i18n="detected_aggressors_title">Lista de Alimentos Agresores Detectados</span>
+                        </h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="detected_aggressors_desc">Alimentos que detonaron respuesta de estrés adrenérgica o picos de glucosa.</p>
+                    </div>
+                    <button onclick="clearAggressorLog()" class="text-xs text-rose-500 hover:text-rose-700 font-semibold transition" data-i18n="btn_clear_aggressors">
+                        Limpiar Registro
+                    </button>
+                </div>
+
+                <div id="aggressor-log-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    <!-- Dynamic aggressor food entries injected here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: PAM LOG (PHYSICAL REACTION & MEAL TRACKER) -->
+        <section id="tab-pam" class="tab-content hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Log Form Column -->
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm space-y-5 h-fit">
+                    <div class="border-b border-slate-100 dark:border-slate-700 pb-3">
+                        <h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+                            <i class="fa-solid fa-pen-to-square text-brand-600 dark:text-rose-400"></i>
+                            <span data-i18n="pam_form_title">Registrar Comida o Reacción</span>
+                        </h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="pam_form_desc">Guarda tus observaciones digestivas y de bienestar diario.</p>
+                    </div>
+
+                    <form id="pam-form" onsubmit="savePamEntry(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-1" data-i18n="pam_lbl_date">Fecha y Hora</label>
+                            <input type="datetime-local" id="pam-date" required class="w-full text-xs p-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-brand-500 text-slate-800 dark:text-slate-100">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-1" data-i18n="pam_lbl_food">Alimento / Platillo Consumido</label>
+                            <input type="text" id="pam-food" required placeholder="Ej: Pechuga de pavo con ensalada de espinacas" class="w-full text-xs p-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-brand-500 text-slate-800 dark:text-slate-100">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-1" data-i18n="pam_lbl_reaction">Reacción / Nivel de Energía</label>
+                            <select id="pam-reaction" class="w-full text-xs p-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-brand-500 text-slate-800 dark:text-slate-100">
+                                <option value="Excelente" data-i18n="pam_opt_excellent">🟢 Excelente - Gran energía / Digestión ligera</option>
+                                <option value="Buena" data-i18n="pam_opt_good">🟢 Buena - Sin molestias</option>
+                                <option value="Regular" data-i18n="pam_opt_regular">🟡 Regular - Ligera pesadez</option>
+                                <option value="Mala" data-i18n="pam_opt_bad">🔴 Mala - Inflamación o fatiga</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-1" data-i18n="pam_lbl_notes">Notas Adicionales</label>
+                            <textarea id="pam-notes" rows="3" placeholder="Síntomas, nivel de estrés, o contexto..." class="w-full text-xs p-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-brand-500 text-slate-800 dark:text-slate-100"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-xl shadow-md shadow-brand-500/20 transition" data-i18n="btn_save_log">
+                            Guardar Registro
+                        </button>
+                    </form>
+                </div>
+
+                <!-- History Column -->
+                <div class="lg:col-span-2 bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 pb-3">
+                        <div>
+                            <h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+                                <i class="fa-solid fa-clock-rotate-left text-brand-600 dark:text-rose-400"></i>
+                                <span data-i18n="pam_history_title">Historial de Registros</span>
+                            </h2>
+                            <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="pam_history_desc">Bitácora interactiva almacenada localmente</p>
+                        </div>
+                        <button onclick="clearPamHistory()" class="text-xs text-rose-500 hover:text-rose-700 font-semibold transition" data-i18n="btn_clear_history">
+                            Borrar Historial
+                        </button>
+                    </div>
+
+                    <div id="pam-history-list" class="space-y-3 max-h-[500px] overflow-y-auto pr-1">
+                        <!-- History items rendered dynamically -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: PROFILE & CONFIGURATION -->
+        <section id="tab-profile" class="tab-content hidden max-w-2xl mx-auto space-y-6">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm space-y-6">
+                <div class="border-b border-slate-100 dark:border-slate-700 pb-4">
+                    <h2 class="text-xl font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+                        <i class="fa-solid fa-sliders text-brand-600 dark:text-rose-400"></i>
+                        <span data-i18n="prof_header_title">Configuración del Perfil BIODiet</span>
+                    </h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="prof_header_desc">Selecciona tu grupo sanguíneo y neurotipo para adaptar los algoritmos de clasificación de alimentos.</p>
+                </div>
+
+                <form id="config-form" onsubmit="saveProfileSettings(event)" class="space-y-6">
+                    <!-- Blood Type Selector -->
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-3" data-i18n="lbl_select_blood_type">
+                            Tipo de Sangre ABO
+                        </label>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                            <label class="cursor-pointer">
+                                <input type="radio" name="blood_type" value="O" class="peer hidden" checked>
+                                <div class="p-4 rounded-xl border-2 border-slate-200 dark:border-slate-700 peer-checked:border-brand-600 peer-checked:bg-rose-50/50 dark:peer-checked:bg-rose-950/20 text-center transition">
+                                    <div class="text-xl font-extrabold text-slate-800 dark:text-white peer-checked:text-brand-600">Tipo O</div>
+                                    <span class="text-[10px] text-slate-500 dark:text-slate-400" data-i18n="bt_desc_o">Cazador / Ancestral</span>
+                                </div>
+                            </label>
+
+                            <label class="cursor-pointer">
+                                <input type="radio" name="blood_type" value="A" class="peer hidden">
+                                <div class="p-4 rounded-xl border-2 border-slate-200 dark:border-slate-700 peer-checked:border-brand-600 peer-checked:bg-rose-50/50 dark:peer-checked:bg-rose-950/20 text-center transition">
+                                    <div class="text-xl font-extrabold text-slate-800 dark:text-white peer-checked:text-brand-600">Tipo A</div>
+                                    <span class="text-[10px] text-slate-500 dark:text-slate-400" data-i18n="bt_desc_a">Agricultor / Vegetal</span>
+                                </div>
+                            </label>
+
+                            <label class="cursor-pointer">
+                                <input type="radio" name="blood_type" value="B" class="peer hidden">
+                                <div class="p-4 rounded-xl border-2 border-slate-200 dark:border-slate-700 peer-checked:border-brand-600 peer-checked:bg-rose-50/50 dark:peer-checked:bg-rose-950/20 text-center transition">
+                                    <div class="text-xl font-extrabold text-slate-800 dark:text-white peer-checked:text-brand-600">Tipo B</div>
+                                    <span class="text-[10px] text-slate-500 dark:text-slate-400" data-i18n="bt_desc_b">Nómada / Equilibrado</span>
+                                </div>
+                            </label>
+
+                            <label class="cursor-pointer">
+                                <input type="radio" name="blood_type" value="AB" class="peer hidden">
+                                <div class="p-4 rounded-xl border-2 border-slate-200 dark:border-slate-700 peer-checked:border-brand-600 peer-checked:bg-rose-50/50 dark:peer-checked:bg-rose-950/20 text-center transition">
+                                    <div class="text-xl font-extrabold text-slate-800 dark:text-white peer-checked:text-brand-600">Tipo AB</div>
+                                    <span class="text-[10px] text-slate-500 dark:text-slate-400" data-i18n="bt_desc_ab">Enigma / Moderno</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Nervous System Selector -->
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-3" data-i18n="lbl_select_nervous_system">
+                            Predominancia del Sistema Nervioso
+                        </label>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <label class="cursor-pointer">
+                                <input type="radio" name="nervous_system" value="Passive" class="peer hidden" checked>
+                                <div class="p-3.5 rounded-xl border-2 border-slate-200 dark:border-slate-700 peer-checked:border-brand-600 peer-checked:bg-rose-50/50 dark:peer-checked:bg-rose-950/20 transition">
+                                    <div class="font-bold text-sm text-slate-800 dark:text-white" data-i18n="ns_passive">Pasivo (Parasimpático)</div>
+                                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1" data-i18n="ns_passive_desc">Mayor tolerancia a proteínas animales y grasas. Digestión robusta.</p>
+                                </div>
+                            </label>
+
+                            <label class="cursor-pointer">
+                                <input type="radio" name="nervous_system" value="Active" class="peer hidden">
+                                <div class="p-3.5 rounded-xl border-2 border-slate-200 dark:border-slate-700 peer-checked:border-brand-600 peer-checked:bg-rose-50/50 dark:peer-checked:bg-rose-950/20 transition">
+                                    <div class="font-bold text-sm text-slate-800 dark:text-white" data-i18n="ns_active">Activo (Simpático)</div>
+                                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1" data-i18n="ns_active_desc">Sensibilidad a grasas pesadas y carnes rojas. Beneficiado por alimentos vegetales.</p>
+                                </div>
+                            </label>
+
+                            <label class="cursor-pointer">
+                                <input type="radio" name="nervous_system" value="Balanced" class="peer hidden">
+                                <div class="p-3.5 rounded-xl border-2 border-slate-200 dark:border-slate-700 peer-checked:border-brand-600 peer-checked:bg-rose-50/50 dark:peer-checked:bg-rose-950/20 transition">
+                                    <div class="font-bold text-sm text-slate-800 dark:text-white" data-i18n="ns_balanced">Equilibrado</div>
+                                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1" data-i18n="ns_balanced_desc">Respuesta balanceada entre acción y descanso digestivo.</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Action buttons -->
+                    <div class="pt-4 flex items-center justify-end space-x-3 border-t border-slate-100 dark:border-slate-700">
+                        <button type="submit" class="px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-xl shadow-md shadow-brand-500/20 transition flex items-center space-x-2">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                            <span data-i18n="btn_save_config">Guardar Configuración</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- App Toast Notifications -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+
+    <!-- JavaScript Data Logic & Application Script -->
+    <script>
+        /* ==============================================================================
+           1. INTERNATIONALIZATION (I18N) & TRANSLATIONS DATABASE
+           ============================================================================== */
+        const TRANSLATIONS = {
+            es: {
+                nav_dashboard: "Panel General",
+                nav_search: "Buscador de Alimentos",
+                dash_welcome_badge: "Resumen Personalizado",
+                dash_greeting: "Recomendaciones para Tipo de Sangre {bt}",
+                dash_summary_desc: "Optimiza tu metabolismo y niveles de energía consumiendo alimentos compatibles con tus lectinas sanguíneas y perfil nervioso.",
+                dash_active_profile: "Perfil Actual",
+                lbl_blood_type: "Tipo de Sangre",
+                lbl_nervous_system: "Sistema Nervioso",
+                dash_db_count: "Total Alimentos Registrados",
+                btn_edit_profile: "Cambiar Configuración",
+                dash_chart_title: "Distribución Nutricional",
+                cat_medicinal: "Medicinales / Beneficiosos",
+                cat_neutral: "Neutros",
+                cat_avoid: "Evitar",
+                dash_guidance_title: "Recomendaciones Clave de Tu Perfil",
+                dash_guidance_subtitle: "Principios generales basados en tu tipo de sangre y equilibrio nervioso",
+                search_placeholder: "Buscar alimento (ej. Salmón, Aguacate, Linaza)...",
+                opt_all_categories: "Todas las Categorías",
+                opt_all_status: "Todos los Estados",
+                btn_clear_filters: "Limpiar",
+                lbl_quick_filters: "Filtros Rápidos:",
+                qf_meats: "Carnes",
+                qf_salmon: "Salmón",
+                qf_garlic: "Ajo",
+                qf_wheat: "Trigo",
+                qf_dairy: "Quesos / Lácteos",
+                lbl_header_profile: "Perfil:",
+                nav_suarez_tests: "Tests Frank Suárez",
+                quiz_title: "Test de Sistema Nervioso (5 Preguntas)",
+                quiz_desc: "Cuestionario oficial de Frank Suárez para determinar si tu metabolismo es Pasivo o Excitado.",
+                q1_text: "1. ¿Tienes una digestión lenta o difícil cuando comes carne roja?",
+                q2_text: "2. ¿Las comidas grasosas o pesadas te caen mal o indigestan?",
+                q3_text: "3. ¿Tienes dificultad para conciliar el sueño después de cenar tarde?",
+                q4_text: "4. ¿Cenar tarde de noche alenta o perturba tu digestión?",
+                q5_text: "5. ¿Tienes un sueño liviano y te despiertas con cualquier ruido?",
+                lbl_yes: "Sí",
+                lbl_no: "No",
+                btn_calc_ns: "Calcular Mi Sistema Nervioso",
+                res_passive_title: "Sistema Nervioso PASIVO (Parasimpático Dominante)",
+                res_passive_desc: "Respondiste NO a las 5 preguntas. Tu sistema digestivo es fuerte y toleras bien las carnes rojas y grasas. Tu perfil BIODiet se ha actualizado a PASIVO.",
+                res_active_title: "Sistema Nervioso EXCITADO (Simpático Dominante)",
+                res_active_desc: "Respondiste SÍ a {count} pregunta(s). Tu sistema nervioso está sobreestimulado. Requieres carnes blancas ligeras, bajas grasas y más vegetales. Tu perfil BIODiet se ha actualizado a ACTIVO.",
+                aggressors_title: "Prueba de Pulso y Glucómetro",
+                aggressors_desc: "Detecta sensibilidades al Trigo, Arroz, Maíz (TAM) u otros alimentos agresores mediante pulsaciones o nivel de glucosa.",
+                tab_pulse_test: "Prueba del Pulso",
+                tab_glucose_test: "Prueba de Glucosa",
+                lbl_food_tested: "Alimento Sospechoso",
+                lbl_pulse_before: "Pulso Reposo (ppm)",
+                lbl_pulse_after: "Pulso Post-Alimento (ppm)",
+                pulse_hint: "💡 Si el pulso se eleva 4 o más pulsaciones por minuto (ppm) tras ingerir el alimento, se considera un alimento agresor.",
+                btn_eval_pulse: "Evaluar Reacción de Pulso",
+                lbl_glucose_base: "Glucosa Base (mg/dL)",
+                lbl_glucose_2h: "Glucosa a las 2 hrs (mg/dL)",
+                glucose_hint: "💡 Si la glucosa 2 horas después no regresa cerca de tu nivel base o supera los 130 mg/dL, tu cuerpo manifiesta estrés metabólico por ese alimento.",
+                btn_eval_glucose: "Evaluar Medición de Glucosa",
+                detected_aggressors_title: "Lista de Alimentos Agresores Detectados",
+                detected_aggressors_desc: "Alimentos que detonaron respuesta de estrés adrenérgica o picos de glucosa.",
+                btn_clear_aggressors: "Limpiar Registro",
+                aggressor_confirmed: "¡ALIMENTO AGRESOR DETECTADO!",
+                aggressor_safe: "Sin respuesta de estrés severa",
+                empty_aggressors: "No has registrado alimentos agresores aún.",
+                nav_pam: "Registro PAM",
+                pam_form_title: "Registrar Comida o Reacción",
+                pam_form_desc: "Guarda tus observaciones digestivas y de bienestar diario.",
+                pam_lbl_date: "Fecha y Hora",
+                pam_lbl_food: "Alimento / Platillo Consumido",
+                pam_lbl_reaction: "Reacción / Nivel de Energía",
+                pam_opt_excellent: "🟢 Excelente - Gran energía / Digestión ligera",
+                pam_opt_good: "🟢 Buena - Sin molestias",
+                pam_opt_regular: "🟡 Regular - Ligera pesadez",
+                pam_opt_bad: "🔴 Mala - Inflamación o fatiga",
+                pam_lbl_notes: "Notas Adicionales",
+                btn_save_log: "Guardar Registro",
+                pam_history_title: "Historial de Registros",
+                pam_history_desc: "Bitácora interactiva almacenada localmente",
+                btn_clear_history: "Borrar Historial",
+                empty_pam: "No hay registros acumulados.",
+                nav_profile: "Mi Configuración",
+                prof_header_title: "Configuración del Perfil BIODiet",
+                prof_header_desc: "Selecciona tu grupo sanguíneo y neurotipo para adaptar los algoritmos de clasificación de alimentos.",
+                lbl_select_blood_type: "Tipo de Sangre ABO",
+                bt_desc_o: "Cazador / Ancestral",
+                bt_desc_a: "Agricultor / Vegetal",
+                bt_desc_b: "Nómada / Equilibrado",
+                bt_desc_ab: "Enigma / Moderno",
+                lbl_select_nervous_system: "Predominancia del Sistema Nervioso",
+                ns_passive: "Pasivo (Parasimpático)",
+                ns_passive_desc: "Mayor tolerancia a proteínas animales y grasas. Digestión robusta.",
+                ns_active: "Activo (Simpático)",
+                ns_active_desc: "Sensibilidad a grasas pesadas y carnes rojas. Beneficiado por alimentos vegetales.",
+                ns_balanced: "Equilibrado",
+                ns_balanced_desc: "Respuesta balanceada entre acción y descanso digestivo.",
+                btn_save_config: "Guardar Configuración",
+                toast_saved_config: "¡Configuración de perfil guardada exitosamente!",
+                toast_saved_pam: "¡Entrada guardada en tu Registro PAM!",
+                toast_cleared_pam: "Historial PAM borrado."
+            },
+            en: {
+                nav_dashboard: "Dashboard",
+                nav_search: "Food Search Engine",
+                dash_welcome_badge: "Personalized Overview",
+                dash_greeting: "Recommendations for Blood Type {bt}",
+                dash_summary_desc: "Optimize your metabolism and energy by consuming foods compatible with your blood lectins and nervous system profile.",
+                dash_active_profile: "Active Profile",
+                lbl_blood_type: "Blood Type",
+                lbl_nervous_system: "Nervous System",
+                dash_db_count: "Total Logged Foods",
+                btn_edit_profile: "Edit Profile Settings",
+                dash_chart_title: "Nutritional Distribution",
+                cat_medicinal: "Medicinal / Beneficial",
+                cat_neutral: "Neutral",
+                cat_avoid: "Avoid",
+                dash_guidance_title: "Key Profile Guidance",
+                dash_guidance_subtitle: "General principles based on your blood group and nervous balance",
+                search_placeholder: "Search food item (e.g. Salmon, Avocado, Flaxseed)...",
+                opt_all_categories: "All Categories",
+                opt_all_status: "All Statuses",
+                btn_clear_filters: "Clear",
+                lbl_quick_filters: "Quick Filters:",
+                qf_meats: "Meats",
+                qf_salmon: "Salmon",
+                qf_garlic: "Garlic",
+                qf_wheat: "Wheat",
+                qf_dairy: "Cheeses / Dairy",
+                lbl_header_profile: "Profile:",
+                nav_suarez_tests: "Frank Suárez Tests",
+                quiz_title: "Nervous System Test (5 Questions)",
+                quiz_desc: "Frank Suárez's official questionnaire to determine if your metabolism is Passive or Excited.",
+                q1_text: "1. Do you have slow or heavy digestion when eating red meat?",
+                q2_text: "2. Does fatty, heavy, or greasy food cause indigestion or sleep disruption?",
+                q3_text: "3. Do you have trouble falling asleep after eating late at night?",
+                q4_text: "4. Does eating late at night slow down or disturb your digestion?",
+                q5_text: "5. Are you a light sleeper, waking up easily at small noises?",
+                lbl_yes: "Yes",
+                lbl_no: "No",
+                btn_calc_ns: "Calculate My Nervous System",
+                res_passive_title: "PASSIVE Nervous System (Parasympathetic Dominant)",
+                res_passive_desc: "You answered NO to all 5 questions. Your digestive system is strong and tolerates red meats and healthy fats well. Your active profile has been updated to PASSIVE.",
+                res_active_title: "EXCITABLE Nervous System (Sympathetic Dominant)",
+                res_active_desc: "You answered YES to {count} question(s). Your nervous system is prone to stress. You thrive on lean white meats, lower fats, and green vegetables. Your profile has been updated to ACTIVE.",
+                aggressors_title: "Pulse & Glucometer Aggressor Test",
+                aggressors_desc: "Detect sensitivities to Wheat, Rice, Corn (TAM) or other offending foods via heart rate or blood sugar spikes.",
+                tab_pulse_test: "Pulse Test",
+                tab_glucose_test: "Glucometer Test",
+                lbl_food_tested: "Suspected Food",
+                lbl_pulse_before: "Resting Pulse (bpm)",
+                lbl_pulse_after: "Post-Food Pulse (bpm)",
+                pulse_hint: "💡 If your heart rate increases by 4 or more beats per minute (bpm), it indicates an autonomic stress response to an aggressor food.",
+                btn_eval_pulse: "Evaluate Pulse Reaction",
+                lbl_glucose_base: "Baseline Glucose (mg/dL)",
+                lbl_glucose_2h: "2-Hour Post Glucose (mg/dL)",
+                glucose_hint: "💡 If glucose 2 hours post-meal stays abnormally high or above 130 mg/dL, your metabolism is experiencing stress from that food.",
+                btn_eval_glucose: "Evaluate Glucose Reaction",
+                detected_aggressors_title: "Detected Aggressor Foods",
+                detected_aggressors_desc: "Foods that triggered an autonomic stress response or blood sugar spike.",
+                btn_clear_aggressors: "Clear Aggressors",
+                aggressor_confirmed: "AGGRESSOR FOOD DETECTED!",
+                aggressor_safe: "No severe stress reaction detected",
+                empty_aggressors: "No aggressor foods recorded yet.",
+                nav_pam: "PAM Log",
+                pam_form_title: "Log Food or Reaction",
+                pam_form_desc: "Save daily observations regarding energy level and digestion.",
+                pam_lbl_date: "Date & Time",
+                pam_lbl_food: "Food / Meal Consumed",
+                pam_lbl_reaction: "Reaction / Energy Level",
+                pam_opt_excellent: "🟢 Excellent - Great energy / Light digestion",
+                pam_opt_good: "🟢 Good - No symptoms",
+                pam_opt_regular: "🟡 Regular - Mild heaviness",
+                pam_opt_bad: "🔴 Bad - Bloating or fatigue",
+                pam_lbl_notes: "Additional Notes",
+                btn_save_log: "Save Entry",
+                pam_history_title: "History Log",
+                pam_history_desc: "Interactive log stored locally",
+                btn_clear_history: "Clear History",
+                empty_pam: "No logged entries yet.",
+                nav_profile: "My Settings",
+                prof_header_title: "BIODiet Profile Settings",
+                prof_header_desc: "Select your ABO blood group and neurotype to adapt the food classification algorithms.",
+                lbl_select_blood_type: "ABO Blood Group",
+                bt_desc_o: "Hunter / Ancestral",
+                bt_desc_a: "Cultivator / Vegetarian Focus",
+                bt_desc_b: "Nomad / Balanced",
+                bt_desc_ab: "Enigma / Modern",
+                lbl_select_nervous_system: "Nervous System Dominance",
+                ns_passive: "Passive (Parasympathetic)",
+                ns_passive_desc: "Higher tolerance to animal proteins and fats. Robust digestion.",
+                ns_active: "Active (Sympathetic)",
+                ns_active_desc: "Sensitive to heavy fats and red meat. Thrives on vegetables.",
+                ns_balanced: "Balanced",
+                ns_balanced_desc: "Equilibrated action and digestive rest response.",
+                btn_save_config: "Save Profile Settings",
+                toast_saved_config: "Profile configuration saved successfully!",
+                toast_saved_pam: "Entry saved to your PAM Log!",
+                toast_cleared_pam: "PAM History cleared."
+            }
+        };
+
+        /* Category Names Translations */
+        const CATEGORY_NAMES = {
+            "Meats & Poultry": { es: "Carnes y Aves", en: "Meats & Poultry" },
+            "Seafood": { es: "Pescados y Mariscos", en: "Seafood" },
+            "Dairy & Eggs": { es: "Lácteos y Huevo", en: "Dairy & Eggs" },
+            "Oils & Fats": { es: "Aceites y Grasas", en: "Oils & Fats" },
+            "Nuts & Seeds": { es: "Nueces y Semillas", en: "Nuts & Seeds" },
+            "Beans & Legumes": { es: "Leguminosas y Frijoles", en: "Beans & Legumes" },
+            "Cereals": { es: "Cereales", en: "Cereals" },
+            "Breads & Muffins": { es: "Panes y Repostería", en: "Breads & Muffins" },
+            "Grains & Pastas": { es: "Granos y Pastas", en: "Grains & Pastas" },
+            "Vegetables": { es: "Vegetales y Hortalizas", en: "Vegetables" },
+            "Fruits": { es: "Frutas", en: "Fruits" },
+            "Juices & Fluids": { es: "Jugos y Líquidos", en: "Juices & Fluids" },
+            "Spices & Condiments": { es: "Especias y Condimentos", en: "Spices & Condiments" },
+            "Herbal Teas": { es: "Infusiones Herbales", en: "Herbal Teas" },
+            "Misc Beverages": { es: "Bebidas Diversas", en: "Misc Beverages" }
+        };
+
+        /* Spanish Localized Names Map for Food Database Items */
+        const SPANISH_FOOD_TRANSLATIONS = {
+            // Meats & Poultry
+            "Beef (regular/ground)": "Carne de res (regular/molida)",
+            "Buffalo": "Búfalo",
+            "Heart": "Corazón",
+            "Lamb": "Cordero",
+            "Liver": "Hígado",
+            "Mutton": "Carnero",
+            "Veal": "Ternera",
+            "Venison": "Venado",
+            "Chicken": "Pollo",
+            "Cornish hens": "Gallinita de Cornualles",
+            "Duck": "Pato",
+            "Partridge": "Perdiz",
+            "Pheasant": "Faisán",
+            "Quail": "Codorniz",
+            "Rabbit": "Conejo",
+            "Turkey": "Pavo / Guajolote",
+            "Bacon": "Tocino / Tocineta",
+            "Goose": "Ganso",
+            "Ham": "Jamón",
+            "Pork": "Carne de cerdo",
+
+            // Seafood
+            "Bluefish": "Anchoa de banco / Pescado azul",
+            "Cod": "Bacalao",
+            "Flounder": "Lenguado",
+            "Hake": "Merluza",
+            "Halibut": "Mero / Halibut",
+            "Herring": "Arenque",
+            "Mackerel": "Caballa / Macarela",
+            "Mahi-mahi": "Dorado / Mahi-mahi",
+            "Pike": "Lucio",
+            "Red snapper": "Huachinango / Pargo rojo",
+            "Salmon": "Salmón",
+            "Sardine": "Sardina",
+            "Shad": "Sábalo",
+            "Snapper": "Pargo",
+            "Swordfish": "Pez espada",
+            "Tilefish": "Blanquillo",
+            "Whitefish": "Pescado blanco",
+            "Yellow perch": "Perca amarilla",
+            "Abalone": "Abulón",
+            "Albacore (tuna)": "Atún albacora",
+            "Anchovy": "Anchoa",
+            "Beluga": "Esturión beluga",
+            "Carp": "Carpa",
+            "Clam": "Almeja",
+            "Conch": "Caracol de mar",
+            "Crab": "Cangrejo / Jaiba",
+            "Crayfish": "Langostino de río / Acocil",
+            "Eel": "Anguila",
+            "Frog": "Ancas de rana",
+            "Gray sole": "Lenguado gris",
+            "Grey sole": "Lenguado gris",
+            "Grouper": "Mero / Cherna",
+            "Haddock": "Eglefino",
+            "Lobster": "Langosta",
+            "Monkfish": "Rape / Pejesapo",
+            "Mussels": "Mejillones",
+            "Ocean perch": "Perca oceánica",
+            "Oysters": "Ostiones / Ostras",
+            "Pickerel": "Lucio pequeño",
+            "Porgy": "Besugo / Mojarra de mar",
+            "Rainbow trout": "Trucha arcoíris",
+            "Sailfish": "Pez vela",
+            "Scallop": "Callo de hacha / Vieira",
+            "Sea bass": "Róbalo",
+            "Sea trout": "Trucha de mar",
+            "Shark": "Tiburón / Cazón",
+            "Shrimp": "Camarón",
+            "Silver perch": "Perca plateada",
+            "Smelt": "Eperlano / Charal",
+            "Snail": "Caracol",
+            "Sole": "Lenguado fino",
+            "Squid (calamari)": "Calamar",
+            "Striped bass": "Róbalo rayado",
+            "Sturgeon": "Esturión",
+            "Turtle": "Tortuga",
+            "Weakfish": "Corvina",
+            "White perch": "Perca blanca",
+            "Yellowtail": "Jurel / Cola amarilla",
+            "Barracuda": "Barracuda",
+            "Bluegill bass": "Pez luna / Mojarra",
+            "Catfish": "Bagre",
+            "Caviar": "Caviar",
+            "Herring (pickled)": "Arenque en escabeche",
+            "Herring (fresh/pickled)": "Arenque (fresco/escabeche)",
+            "Lox (smoked salmon)": "Salmón ahumado (Lox)",
+            "Octopus": "Pulpo",
+
+            // Dairy & Eggs
+            "Butter": "Mantequilla",
+            "Farmer cheese": "Queso ranchero / fresco",
+            "Feta": "Queso feta",
+            "Goat cheese": "Queso de cabra",
+            "Goat milk": "Leche de cabra",
+            "Mozzarella": "Queso mozzarella",
+            "Mozzarella (low fat)": "Queso mozzarella bajo en grasa",
+            "Ricotta (low fat)": "Queso ricotta bajo en grasa",
+            "Soy cheese": "Queso de soya",
+            "Soya cheese": "Queso de soya",
+            "Soy milk": "Leche de soya",
+            "Kefir": "Kéfir / Búlgaros",
+            "String cheese": "Queso Oaxaca / de hebra",
+            "Yogurt (regular)": "Yogur natural",
+            "Eggs": "Huevo",
+            "American cheese": "Queso amarillo / americano",
+            "Blue cheese": "Queso azul / Roquefort",
+            "Brie": "Queso Brie",
+            "Buttermilk": "Suero de mantequilla",
+            "Camembert": "Queso Camembert",
+            "Casein": "Caseína",
+            "Cheddar": "Queso Cheddar",
+            "Colby": "Queso Colby",
+            "Cottage cheese": "Queso cottage",
+            "Cream cheese": "Queso crema",
+            "Edam": "Queso Edam / de bola",
+            "Emmenthal": "Queso Emmental",
+            "Gouda": "Queso Gouda",
+            "Gruyere": "Queso Gruyere",
+            "Ice cream": "Helado / Nieve de leche",
+            "Jarlsberg": "Queso Jarlsberg",
+            "Monterey jack": "Queso Monterey Jack",
+            "Munster": "Queso Muenster",
+            "Neufchatel": "Queso Neufchâtel",
+            "Parmesan": "Queso parmesano",
+            "Provolone": "Queso provolone",
+            "Ricotta": "Queso ricotta",
+            "Sherbet": "Sorbete con lácteos",
+            "Skim or 2% milk": "Leche descremada o semidescremada",
+            "Swiss": "Queso suizo",
+            "Whey": "Suero de leche (Whey)",
+            "Whole milk": "Leche entera",
+            "Yogurt (all varieties)": "Yogur (todas las variedades)",
+
+            // Oils & Fats
+            "Linseed (flaxseed) oil": "Aceite de linaza",
+            "Olive oil": "Aceite de oliva",
+            "Canola oil": "Aceite de canola",
+            "Cod liver oil": "Aceite de hígado de bacalao",
+            "Sesame oil": "Aceite de ajonjolí / sésamo",
+            "Corn oil": "Aceite de maíz",
+            "Cottonseed oil": "Aceite de semilla de algodón",
+            "Peanut oil": "Aceite de cacahuate",
+            "Safflower oil": "Aceite de cártamo",
+
+            // Nuts & Seeds
+            "Pumpkin seeds": "Pepitas de calabaza",
+            "Walnuts": "Nueces de Castilla",
+            "Almonds": "Almendras",
+            "Almond butter": "Crema / Mantequilla de almendra",
+            "Chestnuts": "Castañas",
+            "Filberts": "Avellanas",
+            "Hickory": "Nuez encarcelada / Nogal",
+            "Litchi": "Lichi / Semilla de lichi",
+            "Macadamia": "Nuez de macadamia",
+            "Pecans": "Nuez pecana / cáscara de papel",
+            "Pignola (pine)": "Piñones",
+            "Sesame butter (tahini)": "Tahini / Crema de ajonjolí",
+            "Sesame seeds": "Semillas de ajonjolí / sésamo",
+            "Sunflower butter": "Crema de semilla de girasol",
+            "Sunflower seeds": "Semillas de girasol",
+            "Brazil nuts": "Nueces de Brasil",
+            "Cashews": "Nuez de la India / Anacardos",
+            "Peanuts": "Cacahuates / Maní",
+            "Peanut butter": "Crema de cacahuate",
+            "Pistachios": "Pistaches",
+            "Poppy seeds": "Semillas de amapola",
+
+            // Beans & Legumes
+            "Aduke beans": "Frijoles aduki",
+            "Aduki beans": "Frijoles aduki",
+            "Black-eyed peas": "Frijol carita / Ojo negro",
+            "Pinto beans": "Frijoles pintos",
+            "Beans (adzuke/azuki/black/green/pinto/red soy)": "Frijoles (aduki/negro/ejote/pinto/soya roja)",
+            "Lentils (domestic/green/red)": "Lentejas (comunes/verdes/rojas)",
+            "Peas (black-eyed)": "Frijol carita / Chícharo ojo negro",
+            "Beans (black/broad/cannellini/fava/garbanzo/green/jicama/lima/northern/red/red soy/snap/string/white)": "Frijoles y legumbres (negro/haba/blanco/garbanzo/ejote/alubia)",
+            "Beans (cannellini/broad/fava/jicama/snap/string/white)": "Frijoles (alubia/haba/ejote/blanco)",
+            "Peas (green/pods)": "Chícharos (verdes/en vaina)",
+            "Peas (green/pods/snow)": "Chícharos (verdes/en vaina/chino)",
+            "Beans (copper/kidney/navy/tamarind)": "Frijoles (peruano/riñón/alubia chica/tamarindo)",
+            "Beans (copper/garbanzo/kidney/lima/navy/red/tamarind)": "Frijoles (peruano/garbanzo/riñón/haba/rojo)",
+
+            // Cereals
+            "Amaranth": "Amaranto",
+            "Barley": "Cebada",
+            "Buckwheat": "Trigo sarraceno / Alforfón",
+            "Cream of rice": "Crema de arroz",
+            "Kamut": "Trigo kamut",
+            "Kasha": "Kasha (trigo sarraceno tostado)",
+            "Millet (puffed)": "Mijo inflado",
+            "Rice bran": "Salvado de arroz",
+            "Rice (puffed)": "Arroz inflado",
+            "Spelt": "Espelta",
+            "Cornflakes": "Hojuelas de maíz",
+            "Cornmeal": "Harina de maíz / Polenta",
+            "Cream of wheat": "Crema de trigo",
+            "Familia": "Cereal Familia / Muesli",
+            "Farina": "Sémola de trigo (Farina)",
+            "Granola": "Granola",
+            "Grape nuts": "Cereal Grape-Nuts",
+            "Oat bran": "Salvado de avena",
+            "Oatmeal": "Avena en hojuelas",
+            "Seven-grain": "Cereal siete granos",
+            "Seven grain": "Cereal siete granos",
+            "Shredded wheat": "Trigo triturado",
+            "Wheat bran": "Salvado de trigo",
+            "Wheat germ": "Germen de trigo",
+
+            // Breads & Muffins
+            "Essene bread": "Pan esenio",
+            "Ezekiel bread": "Pan Ezequiel",
+            "Brown rice bread": "Pan de arroz integral",
+            "Fin Crisp": "Galletas crujientes Fin Crisp",
+            "Gluten-free bread": "Pan libre de gluten",
+            "Ideal Flat Bread": "Pan plano tipo tostada",
+            "Millet": "Pan de mijo",
+            "Rice cakes": "Tortitas de arroz inflado",
+            "Rye bread (100%)": "Pan de centeno (100%)",
+            "Rye Crisps": "Tostadas de centeno",
+            "Rye Vita": "Galletas Ryvita de centeno",
+            "Soy flour bread": "Pan de harina de soya",
+            "Soya flour bread": "Pan de harina de soya",
+            "Spelt bread": "Pan de espelta",
+            "Wasa bread": "Pan crujiente Wasa",
+            "Bagels (wheat)": "Bagels de trigo",
+            "Corn muffins": "Panqués / Muffins de maíz",
+            "Durum wheat": "Pan de trigo duro",
+            "English muffins": "Panecillos ingleses (English muffins)",
+            "High-protein bread": "Pan alto en proteína",
+            "Matzos (wheat)": "Pan ácimo / Matzá de trigo",
+            "Multi-grain bread": "Pan multigrano",
+            "Oat bran muffins": "Panqués de salvado de avena",
+            "Pumpernickel": "Pan integral de centeno oscuro (Pumpernickel)",
+            "Sprouted wheat bread": "Pan de trigo germinado",
+            "Whole wheat bread": "Pan integral de trigo",
+            "Wheat bran muffins": "Panqués de salvado de trigo",
+
+            // Grains & Pastas
+            "Barley flour": "Harina de cebada",
+            "Buckwheat kasha": "Kasha de trigo sarraceno",
+            "Flour (oat/rice/rye/soba)": "Harinas (avena/arroz/centeno/trigo sarraceno)",
+            "Pasta (artichoke)": "Pasta de alcachofa",
+            "Quinoa": "Quinoa / Quinua",
+            "Rice (basmati/wild/brown/white)": "Arroz (basmati/silvestre/integral/blanco)",
+            "Rice (basmati/brown/white/wild)": "Arroz (basmati/integral/blanco/silvestre)",
+            "Rice flour": "Harina de arroz",
+            "Rye flour": "Harina de centeno",
+            "Spelt flour": "Harina de espelta",
+            "Couscous": "Cuscús",
+            "Flour (barley/bulgur wheat/durum wheat/gluten/graham/spelt/sprouted wheat)": "Harinas (cebada/trigo bulgur/duro/graham/espelta)",
+            "Noodles (spelt)": "Fideos de espelta",
+            "Bulgur wheat flour": "Harina de trigo bulgur",
+            "Couscous flour": "Harina de cuscús",
+            "Durum wheat flour": "Harina de trigo duro",
+            "Gluten flour": "Harina de gluten",
+            "Graham flour": "Harina integral Graham",
+            "Oat flour": "Harina de avena",
+            "Soba noodles": "Fideos soba (trigo sarraceno)",
+            "Semolina pasta": "Pasta de sémola de trigo",
+            "Spinach pasta": "Pasta de espinaca (con trigo)",
+            "Sprouted wheat flour": "Harina de trigo germinado",
+            "White flour": "Harina blanca refinada",
+            "Whole wheat flour": "Harina de trigo integral",
+            "Flour (white/whole wheat)": "Harina (blanca/integral de trigo)",
+            "Pasta (semolina)": "Pasta de sémola",
+
+            // Vegetables
+            "Artichoke (domestic/Jerusalem)": "Alcachofa (doméstica/tupinambo)",
+            "Beet leaves": "Hojas de betabel / remolacha",
+            "Broccoli": "Brócoli",
+            "Chicory": "Achicoria",
+            "Collard greens": "Berza / Col silvestre",
+            "Dandelion": "Diente de león",
+            "Escarole": "Escarola",
+            "Fiddlehead ferns": "Helechos brote",
+            "Garlic": "Ajo",
+            "Ginger": "Jengibre",
+            "Horseradish": "Rábano picante",
+            "Kale": "Col rizada / Kale",
+            "Kohlrabi": "Colinabo",
+            "Leek": "Poro / Ajo porro",
+            "Lettuce (Bibb/Boston/iceberg/mesclun/romaine)": "Lechuga (Orejona/Italiana/Romana/Bola)",
+            "Lettuce (bibb/Boston/iceberg/mesclun)": "Lechuga (Italiana/Bola/Francesa)",
+            "Lettuce (romaine)": "Lechuga orejona / romana",
+            "Lima beans": "Habas / Frijol de lima",
+            "Mushroom (abalone/enoki/Portobello/tree oyster)": "Champiñones (Portobello/Enoki/Seta ostra)",
+            "Okra": "Okra / Quimbombó",
+            "Olives (green)": "Aceitunas verdes",
+            "Onions (green/red/Spanish/yellow)": "Cebollas (Blanca/Morada/Cambray/Amarilla)",
+            "Parsley": "Perejil",
+            "Parsnips": "Chirivía",
+            "Peppers (green/jalapeno/yellow)": "Chiles y pimientos (Verde/Jalapeño/Amarillo)",
+            "Peppers (green/red/jalapeno/yellow)": "Chiles y pimientos (Verde/Rojo/Jalapeño/Amarillo)",
+            "Pumpkin": "Calabaza de castilla",
+            "Radicchio": "Radicchio / Achicoria roja",
+            "Radishes": "Rábanos",
+            "Radish": "Rábano",
+            "Radish sprouts": "Germinado de rábano",
+            "Rappini": "Rappini / Brócoli rabe",
+            "Rutabaga": "Rutabaga / Nabo sueco",
+            "Scallion": "Cebollín / Cebolla cambray",
+            "Seaweed": "Algas marinas",
+            "Shallots": "Echalote",
+            "Snow peas": "Chícharo chino / Holantao",
+            "Spinach": "Espinacas",
+            "Sprouts (mung/radish)": "Germinados (Soya/Rábano)",
+            "Sprouts (alfalfa)": "Germinado de alfalfa",
+            "Sprouts (Brussels/mung)": "Coles de Bruselas / Germinado de soya",
+            "Squash (all types)": "Calabacitas (todos los tipos)",
+            "Sweet potatoes": "Camote dulce",
+            "Swiss chard": "Acelgas",
+            "Tempeh": "Tempeh (soya fermentada)",
+            "Tofu": "Tofu / Queso de soya",
+            "Tomato": "Jitomate / Tomate rojo",
+            "Tomatoes": "Jitomates / Tomates rojos",
+            "Turnips": "Nabo",
+            "Watercress": "Berros",
+            "Water chestnut": "Castaña de agua",
+            "Yams (all types)": "Camote / Ñame",
+            "Yams": "Camote / Ñame",
+            "Arugula": "Arúgula",
+            "Asparagus": "Espárragos",
+            "Bamboo shoots": "Brotes de bambú",
+            "Avocado": "Aguacate",
+            "Beets": "Betabel / Remolacha",
+            "Bok choy": "Bok choy / Col china",
+            "Cabbage (Chinese/red/white)": "Col / Repollo (China/Morada/Blanca)",
+            "Cabbage (Chinese)": "Col china / Napa",
+            "Cabbage (red/white)": "Col / Repollo (Morada/Blanca)",
+            "Caraway": "Alcaravea",
+            "Carrots": "Zanahorias",
+            "Celery": "Apio",
+            "Chervil": "Perifollo",
+            "Coriander": "Cilantro",
+            "Cucumber": "Pepino",
+            "Daikon": "Rábano daikon",
+            "Daikon radish": "Rábano daikon",
+            "Dill": "Eneldo",
+            "Endive": "Endivia",
+            "Fennel": "Hinojo",
+            "Mustard greens": "Hojas de mostaza",
+            "Olives (black/Greek/Spanish)": "Aceitunas (negras/griegas/españolas)",
+            "Olives (black/Spanish)": "Aceitunas (negras/españolas)",
+            "Potatoes (red/white)": "Papas (rojas/blancas)",
+            "Potatoes (sweet/red/white)": "Papas y camotes (dulce/roja/blanca)",
+            "Peppers (red)": "Pimiento morrón rojo",
+            "Zucchini": "Calabacita italiana / Zucchini",
+            "Cauliflower": "Coliflor",
+            "Corn (white/yellow)": "Maíz / Elote (blanco/amarillo)",
+            "Eggplant": "Berenjena",
+            "Mushroom (domestic/shiitake)": "Champiñón blanco / Shiitake",
+
+            // Fruits
+            "Figs (dried/fresh)": "Higos (secos/frescos)",
+            "Plums (dark/green/red)": "Ciruelas (oscuras/verdes/rojas)",
+            "Prunes": "Ciruelas pasas",
+            "Apples": "Manzanas",
+            "Apricots": "Chabacanos / Damascos",
+            "Bananas": "Plátanos",
+            "Blueberries": "Arándanos azules / Moras azules",
+            "Boysenberries": "Moras de Boysen",
+            "Cherries": "Cerezas",
+            "Cranberries": "Arándanos rojos",
+            "Currants (black/red)": "Grosellas (negras/rojas)",
+            "Dates (red)": "Dátiles rojos",
+            "Dates": "Dátiles",
+            "Elderberries": "Bayas de saúco",
+            "Gooseberries": "Grosellas espinosas / Uva espina",
+            "Grapefruit": "Toronja",
+            "Grapes (red/concord/black/green)": "Uvas (rojas/negras/verdes)",
+            "Grapes (red/concord/green/black)": "Uvas (rojas/verdes/negras)",
+            "Guava": "Guayaba",
+            "Kiwi": "Kiwi",
+            "Kumquat": "Kumquat / Naranja enana",
+            "Lemons": "Limón amarillo",
+            "Limes": "Limón verde / Lima",
+            "Loganberries": "Zarzamoras Logan",
+            "Mangoes": "Mangos",
+            "Melons (canang/casaba/crenshaw/Christmas/musk/Spanish/watermelon)": "Melones variados y sandía",
+            "Melons (canang/casaba/Christmas/crenshaw/musk/Spanish/watermelon)": "Melones variados y sandía",
+            "Nectarines": "Nectarinas",
+            "Papayas": "Papayas",
+            "Peaches": "Duraznos",
+            "Pears": "Peras",
+            "Persimmons": "Caquis / Persimonios",
+            "Pineapples": "Piña",
+            "Pineapple": "Piña",
+            "Pomegranates": "Granadas",
+            "Prickly pear": "Tuna (fruto del nopal)",
+            "Prickly pears": "Tunas (fruto del nopal)",
+            "Raisins": "Uvas pasas",
+            "Raspberries": "Frambuesas",
+            "Star fruit (carambola)": "Carambola / Fruta estrella",
+            "Watermelon": "Sandía",
+            "Blackberries": "Zarzamoras",
+            "Coconuts": "Coco",
+            "Melons (cantaloupe/honeydew)": "Melón chino / Melón valenciano",
+            "Oranges": "Naranjas",
+            "Plantains": "Plátano macho",
+            "Rhubarb": "Ruibarbo",
+            "Strawberries": "Fresas",
+            "Tangerines": "Mandarinas",
+
+            // Juices & Fluids
+            "Black cherry juice": "Jugo de cereza negra",
+            "Pineapple juice": "Jugo de piña",
+            "Prune juice": "Jugo de ciruela pasa",
+            "Apricot juice": "Jugo de chabacano",
+            "Carrot juice": "Jugo de zanahoria",
+            "Celery juice": "Jugo de apio",
+            "Cranberry juice": "Jugo de arándano rojo",
+            "Cucumber juice": "Jugo de pepino",
+            "Grape juice": "Jugo de uva",
+            "Grapefruit juice": "Jugo de toronja",
+            "Papaya juice": "Jugo de papaya",
+            "Tomato juice": "Jugo de jitomate",
+            "Water (with lemon)": "Agua natural (con limón)",
+            "Vegetable juice": "Jugo de vegetales permitidos",
+            "Apple juice": "Jugo de manzana",
+            "Apple cider": "Sidra de manzana sin alcohol",
+            "Cabbage juice": "Jugo de col",
+            "Orange juice": "Jugo de naranja",
+
+            // Spices & Condiments
+            "Carob": "Algarroba",
+            "Curry": "Curry en polvo",
+            "Dulse": "Alga Dulse",
+            "Kelp (bladder wrack)": "Alga Kelp",
+            "Kelp": "Alga Kelp",
+            "Mint": "Menta",
+            "Miso": "Pasta Miso",
+            "Molasses": "Melaza",
+            "Blackstrap molasses": "Melaza negra de caña",
+            "Mustard (dry)": "Mostaza seca en polvo",
+            "Paprika": "Pimentón / Paprika",
+            "Pepper (cayenne/peppercorn/red flakes)": "Pimienta de cayena / hojuelas rojas",
+            "Turmeric": "Cúrcuma",
+            "Agar": "Agar-agar (gelatina vegetal)",
+            "Allspice": "Pimienta gorda / de Jamaica",
+            "Almond extract": "Extracto de almendra",
+            "Anise": "Anís",
+            "Apple butter": "Puré / Mantequilla de manzana",
+            "Arrowroot": "Arrurruz (espesante natural)",
+            "Barley malt": "Malta de cebada",
+            "Basil": "Albahaca",
+            "Bay leaf": "Hoja de laurel",
+            "Bergamot": "Bergamota",
+            "Brown rice syrup": "Jarabe de arroz integral",
+            "Cardamom": "Cardamomo",
+            "Chives": "Cebollín fino",
+            "Chocolate": "Chocolate",
+            "Clove": "Clavo de olor",
+            "Cream of tartar": "Crémor tártaro",
+            "Cumin": "Comino",
+            "Gelatin (plain)": "Grenetina / Gelatina natural",
+            "Gelatin": "Grenetina / Gelatina",
+            "Honey": "Miel de abeja",
+            "Jam/Jelly (acceptable)": "Mermelada / Jalea (de frutas permitidas)",
+            "Jam/Jelly": "Mermelada / Jalea",
+            "Maple syrup": "Miel de maple pura",
+            "Marjoram": "Mejorana",
+            "Mayonnaise": "Mayonesa",
+            "Mustard": "Mostaza preparada",
+            "Oregano": "Orégano",
+            "Peppermint": "Menta piperita",
+            "Pimiento": "Pimiento morrón en conserva",
+            "Rice syrup": "Jarabe de arroz",
+            "Rosemary": "Romero",
+            "Saffron": "Azafrán",
+            "Sage": "Salvia",
+            "Salt": "Sal",
+            "Savory": "Ajedrea",
+            "Soy sauce": "Salsa de soya",
+            "Spearmint": "Hierbabuena",
+            "Sugar (brown/white)": "Azúcar (mascabado/blanca)",
+            "Sugar": "Azúcar",
+            "Tamari": "Salsa Tamari (soya sin trigo)",
+            "Tamarind": "Tamarindo",
+            "Tapioca": "Tapioca",
+            "Tarragon": "Estragón",
+            "Thyme": "Tomillo",
+            "Vanilla": "Vainilla",
+            "Vinegar (apple cider/balsamic/red wine)": "Vinagre (manzana/balsámico/vino tinto)",
+            "Vinegar": "Vinagre",
+            "Worcestershire sauce": "Salsa inglesa",
+            "Capers": "Alcaparras",
+            "Cinnamon": "Canela",
+            "Cornstarch": "Fécula de maíz / Maicena",
+            "Corn syrup": "Jarabe de maíz",
+            "Ketchup": "Salsa cátsup",
+            "Nutmeg": "Nuez moscada",
+            "Pepper (black ground/white)": "Pimienta negra molida / blanca",
+            "Pepper (black/white)": "Pimienta negra / blanca",
+            "Pickles (dill/kosher/sweet/sour)": "Pepinillos encurtidos",
+            "Pickles": "Pepinillos encurtidos",
+            "Relish": "Salsa relish de pepinillos",
+
+            // Herbal Teas & Misc Beverages
+            "Cayenne": "Infusión de cayena",
+            "Chickweed": "Pamplina",
+            "Fenugreek": "Fenogreco / Alholva",
+            "Hops": "Lúpulo",
+            "Linden": "Tila / Flor de tilo",
+            "Mulberry": "Hoja de morera",
+            "Rose hips": "Escaramujo / Rosa mosqueta",
+            "Sarsaparilla": "Zarzaparrilla",
+            "Slippery elm": "Olmo resbaladizo",
+            "Catnip": "Hierba gatera / Nébeda",
+            "Chamomile": "Manzanilla",
+            "Dong quai": "Dong quai / Angélica china",
+            "Elder": "Flor de saúco",
+            "Ginseng": "Ginseng",
+            "Hawthorn": "Espino blanco",
+            "Horehound": "Marrubio",
+            "Licorice root": "Raíz de regaliz / Orozuz",
+            "Milk thistle": "Cardo mariano",
+            "Mullein": "Gordolobo",
+            "Raspberry leaf": "Hoja de frambuesa",
+            "Skullcap": "Escutelaria",
+            "Valerian": "Valeriana",
+            "Yarrow": "Milenrama",
+            "Alfalfa": "Alfalfa",
+            "Aloe": "Sábila / Aloe vera",
+            "Burdock": "Bardana",
+            "Coltsfoot": "Tusílago",
+            "Corn silk": "Pelos de elote",
+            "Echinacea": "Equinácea",
+            "Gentian": "Genciana",
+            "Goldenseal": "Sello de oro",
+            "Red clover": "Trébol rojo",
+            "Saint-John's-wort": "Hierba de San Juan",
+            "Senna": "Hoja de sen",
+            "Shepherd's purse": "Bolsa de pastor",
+            "Strawberry leaf": "Hoja de fresa",
+            "Vervain": "Verbena",
+            "White birch": "Abedul blanco",
+            "White oak bark": "Corteza de roble blanco",
+            "Yellow dock": "Lengua de vaca / Acedera",
+            "Club soda": "Agua mineral",
+            "Seltzer water": "Agua gasificada / Seltzer",
+            "Beer": "Cerveza",
+            "Wine (red/white)": "Vino (tinto/blanco)",
+            "Wine (red)": "Vino tinto",
+            "Wine (white)": "Vino blanco",
+            "Coffee (regular/decaf)": "Café (regular/descafeinado)",
+            "Green tea": "Té verde",
+            "Liquor (distilled)": "Licores destilados",
+            "Liquor": "Licores destilados",
+            "Soda (cola/diet/other)": "Refrescos (cola/dieta/otros)",
+            "Soda": "Refrescos",
+            "Tea (black regular/decaf)": "Té negro (regular/descafeinado)",
+            "Tea (black)": "Té negro"
+        };
+
+        /* ==============================================================================
+           2. FULL FOOD DATABASE (Blood Types O & A strictly from Python source data)
+           ============================================================================== */
+        const FOOD_DATABASE = {
+            "O": {
+                "Medicinal": {
+                    "Meats & Poultry": ["Beef (regular/ground)", "Buffalo", "Heart", "Lamb", "Liver", "Mutton", "Veal", "Venison"],
+                    "Seafood": ["Bluefish", "Cod", "Flounder", "Hake", "Halibut", "Herring", "Mackerel", "Mahi-mahi", "Pike", "Red snapper", "Salmon", "Sardine", "Shad", "Snapper", "Swordfish", "Tilefish", "Whitefish", "Yellow perch"],
+                    "Dairy & Eggs": [],
+                    "Oils & Fats": ["Linseed (flaxseed) oil", "Olive oil"],
+                    "Nuts & Seeds": ["Pumpkin seeds", "Walnuts"],
+                    "Beans & Legumes": ["Aduke beans", "Aduki beans", "Black-eyed peas", "Pinto beans"],
+                    "Cereals": [],
+                    "Breads & Muffins": ["Essene bread", "Ezekiel bread"],
+                    "Grains & Pastas": [],
+                    "Vegetables": [
+                        "Artichoke (domestic/Jerusalem)", "Beet leaves", "Broccoli", "Chicory", "Collard greens", 
+                        "Dandelion", "Escarole", "Fiddlehead ferns", "Garlic", "Ginger", "Horseradish", "Kale", 
+                        "Kohlrabi", "Leek", "Lettuce (Bibb/Boston/iceberg/mesclun/romaine)", "Lima beans", 
+                        "Mushroom (abalone/enoki/Portobello/tree oyster)", "Okra", "Olives (green)", 
+                        "Onions (green/red/Spanish/yellow)", "Parsley", "Parsnips", "Peppers (green/jalapeno/yellow)", 
+                        "Pumpkin", "Radicchio", "Radishes", "Rappini", "Rutabaga", "Scallion", "Seaweed", "Shallots", 
+                        "Snow peas", "Spinach", "Sprouts (mung/radish)", "Squash (all types)", "Sweet potatoes", 
+                        "Swiss chard", "Tempeh", "Tofu", "Tomato", "Turnips", "Watercress", "Water chestnut", 
+                        "Yams (all types)"
+                    ],
+                    "Fruits": ["Figs (dried/fresh)", "Plums (dark/green/red)", "Prunes"],
+                    "Juices & Fluids": ["Black cherry juice", "Pineapple juice", "Prune juice"],
+                    "Spices & Condiments": ["Carob", "Curry", "Dulse", "Kelp (bladder wrack)", "Mint", "Miso", "Molasses", "Mustard (dry)", "Paprika", "Parsley", "Pepper (cayenne/peppercorn/red flakes)", "Turmeric"],
+                    "Herbal Teas": ["Cayenne", "Chickweed", "Dandelion", "Fenugreek", "Ginger", "Hops", "Linden", "Mulberry", "Parsley", "Peppermint", "Rose hips", "Sarsaparilla", "Slippery elm"],
+                    "Misc Beverages": ["Club soda", "Seltzer water"]
+                },
+                "Neutral": {
+                    "Meats & Poultry": ["Chicken", "Cornish hens", "Duck", "Partridge", "Pheasant", "Quail", "Rabbit", "Turkey"],
+                    "Seafood": [
+                        "Abalone", "Albacore (tuna)", "Anchovy", "Beluga", "Carp", "Clam", "Conch", "Crab", "Crayfish", 
+                        "Eel", "Frog", "Gray sole", "Grouper", "Haddock", "Lobster", "Monkfish", "Mussels", "Ocean perch", 
+                        "Oysters", "Pickerel", "Porgy", "Rainbow trout", "Sailfish", "Scallop", "Sea bass", "Sea trout", 
+                        "Shark", "Shrimp", "Silver perch", "Smelt", "Snail", "Sole", "Squid (calamari)", "Striped bass", 
+                        "Sturgeon", "Turtle", "Weakfish", "White perch", "Yellowtail"
+                    ],
+                    "Dairy & Eggs": ["Butter", "Farmer cheese", "Feta", "Goat cheese", "Mozzarella", "Soy cheese", "Soy milk"],
+                    "Oils & Fats": ["Canola oil", "Cod liver oil", "Sesame oil"],
+                    "Nuts & Seeds": ["Almonds", "Almond butter", "Chestnuts", "Filberts", "Hickory", "Macadamia", "Pecans", "Pignola (pine)", "Sesame butter (tahini)", "Sesame seeds", "Sunflower butter", "Sunflower seeds"],
+                    "Beans & Legumes": ["Beans (black/broad/cannellini/fava/garbanzo/green/jicama/lima/northern/red/red soy/snap/string/white)", "Peas (green/pods)"],
+                    "Cereals": ["Amaranth", "Barley", "Buckwheat", "Cream of rice", "Kamut", "Kasha", "Millet (puffed)", "Rice bran", "Rice (puffed)", "Spelt"],
+                    "Breads & Muffins": ["Brown rice bread", "Fin Crisp", "Gluten-free bread", "Ideal Flat Bread", "Millet", "Rice cakes", "Rye bread (100%)", "Rye Crisps", "Rye Vita", "Soy flour bread", "Spelt bread", "Wasa bread"],
+                    "Grains & Pastas": ["Barley flour", "Buckwheat", "Kasha", "Pasta (artichoke)", "Quinoa", "Rice (basmati/wild/brown/white)", "Rice flour", "Rye flour", "Spelt flour"],
+                    "Vegetables": [
+                        "Arugula", "Asparagus", "Bamboo shoots", "Avocado", "Beets", "Bok choy", 
+                        "Cabbage (Chinese/red/white)", "Caraway", "Carrots", "Celery", "Chervil", "Coriander", 
+                        "Cucumber", "Daikon", "Dill", "Endive", "Fennel", "Mustard greens", "Olives (black/Greek/Spanish)", 
+                        "Potatoes (red/white)", "Peppers (red)", "Sprouts (alfalfa/Brussels)"
+                    ],
+                    "Fruits": [
+                        "Apples", "Apricots", "Bananas", "Blueberries", "Boysenberries", "Cherries", "Cranberries", 
+                        "Currants (black/red)", "Dates (red)", "Elderberries", "Gooseberries", "Grapefruit", 
+                        "Grapes (red/concord/black/green)", "Guava", "Kiwi", "Kumquat", "Lemons", "Limes", "Loganberries", 
+                        "Mangoes", "Melons (canang/casaba/crenshaw/Christmas/musk/Spanish/watermelon)", "Nectarines", 
+                        "Papayas", "Peaches", "Pears", "Persimmons", "Pineapples", "Pomegranates", "Prickly pear", "Raisins", 
+                        "Raspberries", "Star fruit (carambola)", "Watermelon"
+                    ],
+                    "Juices & Fluids": ["Apricot juice", "Carrot juice", "Celery juice", "Cranberry juice", "Cucumber juice", "Grape juice", "Grapefruit juice", "Papaya juice", "Tomato juice", "Water (with lemon)", "Vegetable juice"],
+                    "Spices & Condiments": [
+                        "Agar", "Allspice", "Almond extract", "Anise", "Apple butter", "Arrowroot", "Barley malt", 
+                        "Basil", "Bay leaf", "Bergamot", "Brown rice syrup", "Cardamom", "Chervil", "Chives", 
+                        "Chocolate", "Clove", "Coriander", "Cream of tartar", "Cumin", "Dill", "Garlic", "Gelatin (plain)", 
+                        "Honey", "Horseradish", "Jam/Jelly (acceptable)", "Maple syrup", "Marjoram", 
+                        "Mayonnaise", "Mustard", "Peppermint", "Pimiento", "Rice syrup", "Rosemary", "Saffron", "Sage", 
+                        "Salt", "Savory", "Soy sauce", "Spearmint", "Sugar (brown/white)", "Tamari", "Tamarind", "Tapioca", "Tarragon", "Thyme", 
+                        "Vanilla", "Vinegar (apple cider/balsamic/red wine)", "Worcestershire sauce"
+                    ],
+                    "Herbal Teas": ["Catnip", "Chamomile", "Dong quai", "Elder", "Ginseng", "Green tea", "Hawthorn", "Horehound", "Licorice root", "Mullein", "Raspberry leaf", "Sage", "Skullcap", "Spearmint", "Thyme", "Valerian", "Yarrow"],
+                    "Misc Beverages": ["Beer", "Wine (red/white)"]
+                },
+                "Avoid": {
+                    "Meats & Poultry": ["Bacon", "Goose", "Ham", "Pork"],
+                    "Seafood": ["Barracuda", "Bluegill bass", "Catfish", "Caviar", "Herring (pickled)", "Lox (smoked salmon)", "Octopus"],
+                    "Dairy & Eggs": [
+                        "American cheese", "Blue cheese", "Brie", "Buttermilk", "Camembert", "Casein", "Cheddar", 
+                        "Colby", "Cottage cheese", "Cream cheese", "Edam", "Emmenthal", "Goat milk", "Gouda", 
+                        "Gruyere", "Ice cream", "Jarlsberg", "Kefir", "Monterey jack", "Munster", "Neufchatel", 
+                        "Parmesan", "Provolone", "Ricotta", "Skim or 2% milk", "String cheese", "Swiss", "Whey", 
+                        "Whole milk", "Yogurt (all varieties)"
+                    ],
+                    "Oils & Fats": ["Corn oil", "Cottonseed oil", "Peanut oil", "Safflower oil"],
+                    "Nuts & Seeds": ["Brazil nuts", "Cashews", "Litchi", "Peanuts", "Peanut butter", "Pistachios", "Poppy seeds"],
+                    "Beans & Legumes": ["Beans (copper/kidney/navy/tamarind)", "Lentils (domestic/green/red)"],
+                    "Cereals": ["Cornflakes", "Cornmeal", "Cream of wheat", "Familia", "Farina", "Grape nuts", "Oat bran", "Oatmeal", "Seven-grain", "Shredded wheat", "Wheat bran", "Wheat germ"],
+                    "Breads & Muffins": ["Bagels (wheat)", "Corn muffins", "Durum wheat", "English muffins", "High-protein bread", "Matzos (wheat)", "Multi-grain bread", "Oat bran muffins", "Pumpernickel", "Sprouted wheat bread", "Whole wheat bread"],
+                    "Grains & Pastas": ["Bulgur wheat flour", "Couscous flour", "Durum wheat flour", "Gluten flour", "Graham flour", "Oat flour", "Soba noodles", "Semolina pasta", "Spinach pasta", "Sprouted wheat flour", "White flour", "Whole wheat flour"],
+                    "Vegetables": ["Cauliflower", "Corn (white/yellow)", "Eggplant", "Mushroom (domestic/shiitake)", "Mustard greens", "Olives (black/Spanish)", "Potatoes (red/white)", "Sprouts (alfalfa)"],
+                    "Fruits": ["Blackberries", "Coconuts", "Melons (cantaloupe/honeydew)", "Oranges", "Plantains", "Rhubarb", "Strawberries", "Tangerines"],
+                    "Juices & Fluids": ["Apple juice", "Apple cider", "Cabbage juice", "Orange juice"],
+                    "Spices & Condiments": ["Capers", "Cinnamon", "Cornstarch", "Corn syrup", "Ketchup", "Nutmeg", "Pepper (black ground/white)", "Pickles (dill/kosher/sweet/sour)", "Relish", "Vanilla"],
+                    "Herbal Teas": ["Alfalfa", "Aloe", "Burdock", "Coltsfoot", "Corn silk", "Echinacea", "Gentian", "Goldenseal", "Red clover", "Rhubarb", "Saint-John's-wort", "Senna", "Shepherd's purse", "Strawberry leaf", "Yellow dock"],
+                    "Misc Beverages": ["Coffee (regular/decaf)", "Liquor (distilled)", "Soda (cola/diet/other)", "Tea (black regular/decaf)"]
+                }
+            },
+            "A": {
+                "Medicinal": {
+                    "Meats & Poultry": [],
+                    "Seafood": ["Carp", "Cod", "Grouper", "Mackerel", "Monkfish", "Pickerel", "Red snapper", "Rainbow trout", "Salmon", "Sardine", "Sea trout", "Silver perch", "Snail", "Whitefish", "Yellow perch"],
+                    "Dairy & Eggs": ["Soya cheese", "Soy milk"],
+                    "Oils & Fats": ["Linseed (flaxseed) oil", "Olive oil"],
+                    "Nuts & Seeds": ["Peanuts", "Peanut butter", "Pumpkin seeds"],
+                    "Beans & Legumes": ["Beans (adzuke/azuki/black/green/pinto/red soy)", "Lentils (domestic/green/red)", "Peas (black-eyed)"],
+                    "Cereals": ["Amaranth", "Buckwheat", "Kasha"],
+                    "Breads & Muffins": ["Essene bread", "Ezekiel bread", "Rice cakes", "Soya flour bread", "Sprouted wheat bread"],
+                    "Grains & Pastas": ["Buckwheat kasha", "Flour (oat/rice/rye/soba)", "Pasta (artichoke)"],
+                    "Vegetables": [
+                        "Artichoke (domestic/Jerusalem)", "Beet leaves", "Broccoli", "Carrots", "Chicory", 
+                        "Collard greens", "Dandelion", "Escarole", "Garlic", "Horseradish", "Kale", "Kohlrabi", 
+                        "Leek", "Lettuce (romaine)", "Mustard greens", "Okra", "Onions (green/red/Spanish/yellow)", 
+                        "Parsley", "Parsnips", "Pumpkin", "Radish", "Radish sprouts", "Rappini", "Rutabaga", "Scallion", 
+                        "Seaweed", "Shallots", "Spinach", "Sprouts (alfalfa)", "Squash (all types)", "Swiss chard", 
+                        "Tempeh", "Tofu", "Turnips", "Water chestnut", "Watercress"
+                    ],
+                    "Fruits": ["Apricots", "Blackberries", "Blueberries", "Cherries", "Cranberries", "Figs (dried/fresh)", "Grapefruit", "Lemons", "Pineapple", "Plums (dark/green/red)", "Prunes", "Raisins"],
+                    "Juices & Fluids": ["Apricot juice", "Carrot juice", "Celery juice", "Black cherry juice", "Grapefruit juice", "Pineapple juice", "Prune juice", "Water (with lemon)"],
+                    "Spices & Condiments": ["Barley malt", "Blackstrap molasses", "Garlic", "Ginger", "Miso", "Mustard (dry)", "Soy sauce", "Tamari"],
+                    "Herbal Teas": ["Alfalfa", "Aloe", "Burdock", "Chamomile", "Echinacea", "Fenugreek", "Ginger", "Ginseng", "Green tea", "Hawthorn", "Milk thistle", "Rose hips", "Saint-John's-wort", "Slippery elm", "Valerian"],
+                    "Misc Beverages": ["Coffee (regular/decaf)", "Green tea", "Wine (red)"]
+                },
+                "Neutral": {
+                    "Meats & Poultry": ["Chicken", "Cornish hens", "Turkey"],
+                    "Seafood": ["Abalone", "Albacore (tuna)", "Mahi-mahi", "Ocean perch", "Pike", "Porgy", "Sailfish", "Sea bass", "Shark", "Smelt", "Snapper", "Sturgeon", "Swordfish", "Weakfish", "White perch", "Yellowtail"],
+                    "Dairy & Eggs": ["Farmer cheese", "Feta", "Goat cheese", "Goat milk", "Kefir", "Mozzarella (low fat)", "Ricotta (low fat)", "String cheese", "Yogurt (regular)", "Eggs"],
+                    "Oils & Fats": ["Canola oil", "Cod liver oil"],
+                    "Nuts & Seeds": ["Almond butter", "Almonds", "Chestnuts", "Filberts", "Hickory", "Litchi", "Macadamia", "Pignola (pine)", "Poppy seeds", "Sesame seeds", "Sesame butter (tahini)", "Sunflower butter", "Sunflower seeds", "Walnuts"],
+                    "Beans & Legumes": ["Beans (cannellini/broad/fava/jicama/snap/string/white)", "Peas (green/pods/snow)"],
+                    "Cereals": ["Barley", "Cornflakes", "Cornmeal", "Cream of rice", "Kamut", "Millet (puffed)", "Oat bran", "Oatmeal", "Rice (puffed)", "Rice bran", "Spelt"],
+                    "Breads & Muffins": ["Bagels (wheat)", "Brown rice bread", "Corn muffins", "Fin Crisp", "Gluten-free bread", "Ideal Flat Bread", "Millet", "Oat bran muffins", "Rye bread (100%)", "Rye Crisps", "Rye Vita", "Spelt bread", "Wasa bread", "Wheat bran muffins"],
+                    "Grains & Pastas": ["Couscous", "Flour (barley/bulgur wheat/durum wheat/gluten/graham/spelt/sprouted wheat)", "Noodles (spelt)", "Quinoa", "Rice (basmati/brown/white/wild)"],
+                    "Vegetables": [
+                        "Cabbage (Chinese)", "Cucumber", "Daikon radish", "Endive", "Fennel", "Fiddlehead ferns", 
+                        "Lettuce (bibb/Boston/iceberg/mesclun)", "Mushroom (abalone/enoki/Portobello/tree oyster)", 
+                        "Olives (green)", "Radishes", "Sprouts (Brussels/mung)", "Zucchini"
+                    ],
+                    "Fruits": [
+                        "Apples", "Currants (black/red)", "Dates", "Elderberries", "Gooseberries", 
+                        "Grapes (red/concord/green/black)", "Guava", "Kiwi", "Kumquat", "Limes", "Loganberries", 
+                        "Melons (canang/casaba/Christmas/crenshaw/musk/Spanish/watermelon)", "Nectarines", 
+                        "Peaches", "Pears", "Persimmons", "Pomegranates", "Prickly pears", "Raspberries", 
+                        "Rhubarb", "Star fruit (carambola)", "Strawberries"
+                    ],
+                    "Juices & Fluids": ["Apple juice", "Apple cider", "Cabbage juice", "Cucumber juice", "Cranberry juice", "Grapefruit juice", "Vegetable juice"],
+                    "Spices & Condiments": [
+                        "Agar", "Allspice", "Almond extract", "Anise", "Arrowroot", "Basil", "Bay leaf", 
+                        "Bergamot", "Brown rice syrup", "Cardamom", "Carob", "Chervil", "Chives", "Chocolate", 
+                        "Cinnamon", "Clove", "Coriander", "Cornstarch", "Corn syrup", "Cream of tartar", 
+                        "Cumin", "Curry", "Dill", "Dulse", "Honey", "Horseradish", "Jam/Jelly", 
+                        "Kelp", "Maple syrup", "Marjoram", "Mint", "Mustard", "Nutmeg", "Oregano", "Paprika", 
+                        "Parsley", "Peppermint", "Pickles", "Pimiento", "Relish", 
+                        "Rice syrup", "Rosemary", "Saffron", "Sage", "Salt", "Savory", "Spearmint", "Sugar", "Tamarind", "Tapioca", "Tarragon", 
+                        "Thyme", "Turmeric", "Vanilla"
+                    ],
+                    "Herbal Teas": ["Chickweed", "Coltsfoot", "Dandelion", "Dong quai", "Elder", "Gentian", "Goldenseal", "Hops", "Horehound", "Licorice root", "Linden", "Mulberry", "Mullein", "Parsley", "Peppermint", "Raspberry leaf", "Sage", "Sarsaparilla", "Senna", "Shepherd's purse", "Skullcap", "Spearmint", "Strawberry leaf", "Thyme", "Vervain", "White birch", "White oak bark", "Yarrow"],
+                    "Misc Beverages": ["Wine (white)"]
+                },
+                "Avoid": {
+                    "Meats & Poultry": ["Bacon", "Beef (regular/ground)", "Buffalo", "Duck", "Goose", "Ham", "Heart", "Lamb", "Liver", "Mutton", "Partridge", "Pheasant", "Pork", "Quail", "Rabbit", "Veal", "Venison"],
+                    "Seafood": [
+                        "Anchovy", "Barracuda", "Beluga", "Bluefish", "Bluegill bass", "Catfish", "Caviar", 
+                        "Clam", "Conch", "Crab", "Crayfish", "Eel", "Flounder", "Frog", "Grey sole", "Haddock", 
+                        "Hake", "Halibut", "Herring (fresh/pickled)", "Lobster", "Lox (smoked salmon)", "Mussels", 
+                        "Octopus", "Oysters", "Scallop", "Shad", "Shrimp", "Sole", "Squid (calamari)", 
+                        "Striped bass", "Tilefish", "Turtle"
+                    ],
+                    "Dairy & Eggs": [
+                        "American cheese", "Blue cheese", "Brie", "Butter", "Buttermilk", "Camembert", "Casein", 
+                        "Cheddar", "Colby", "Cottage cheese", "Cream cheese", "Edam", "Emmenthal", "Gouda", 
+                        "Gruyere", "Ice cream", "Jarlsberg", "Monterey jack", "Munster", "Neufchatel", 
+                        "Parmesan", "Provolone", "Sherbet", "Skim or 2% milk", "Swiss", "Whey", "Whole milk"
+                    ],
+                    "Oils & Fats": ["Corn oil", "Cottonseed oil", "Peanut oil", "Safflower oil", "Sesame oil"],
+                    "Nuts & Seeds": ["Brazil nuts", "Cashews", "Pistachios"],
+                    "Beans & Legumes": ["Beans (copper/garbanzo/kidney/lima/navy/red/tamarind)"],
+                    "Cereals": ["Cream of wheat", "Familia", "Farina", "Granola", "Grape nuts", "Seven grain", "Shredded wheat", "Wheat bran", "Wheat germ"],
+                    "Breads & Muffins": ["Durum wheat", "English muffins", "High-protein bread", "Matzos (wheat)", "Multi-grain bread", "Pumpernickel", "Whole wheat bread"],
+                    "Grains & Pastas": ["Flour (white/whole wheat)", "Pasta (semolina)"],
+                    "Vegetables": [
+                        "Arugula", "Asparagus", "Avocado", "Bamboo shoots", "Beets", "Bok choy", "Cabbage (red/white)", 
+                        "Caraway", "Cauliflower", "Celery", "Chervil", "Coriander", "Eggplant", "Lima beans", 
+                        "Mushroom (domestic/shiitake)", "Olives (black/Greek/Spanish)", "Peppers (green/red/jalapeno/yellow)", 
+                        "Potatoes (sweet/red/white)", "Tomatoes", "Yams"
+                    ],
+                    "Fruits": ["Bananas", "Coconuts", "Mangoes", "Melons (cantaloupe/honeydew)", "Oranges", "Papayas", "Plantains", "Tangerines"],
+                    "Juices & Fluids": ["Orange juice", "Papaya juice", "Tomato juice"],
+                    "Spices & Condiments": ["Capers", "Gelatin", "Ketchup", "Mayonnaise", "Pepper (black/white)", "Pickles", "Vinegar"],
+                    "Herbal Teas": ["Catnip", "Corn silk", "Rhubarb"],
+                    "Misc Beverages": ["Beer", "Liquor", "Soda", "Tea (black)"]
+                }
+            }
+        };
+
+        /* Fallback mapping for B & AB types using A/O subsets for prototype completeness */
+        FOOD_DATABASE["B"] = JSON.parse(JSON.stringify(FOOD_DATABASE["O"]));
+        FOOD_DATABASE["AB"] = JSON.parse(JSON.stringify(FOOD_DATABASE["A"]));
+
+        /* ==============================================================================
+           3. APPLICATION STATE & STORAGE MANAGEMENT
+           ============================================================================== */
+        let appState = {
+            lang: 'es',
+            blood_type: 'O',
+            nervous_system: 'Passive',
+            pam_log: [],
+            aggressor_log: []
+        };
+
+        function loadConfiguration() {
+            const saved = localStorage.getItem('biodiet_config');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    appState = { ...appState, ...parsed };
+                    if (!appState.aggressor_log) appState.aggressor_log = [];
+                } catch (e) {
+                    console.error("Error reading saved config", e);
+                }
+            }
+        }
+
+        function saveConfiguration() {
+            localStorage.setItem('biodiet_config', JSON.stringify({
+                blood_type: appState.blood_type,
+                nervous_system: appState.nervous_system,
+                pam_log: appState.pam_log,
+                aggressor_log: appState.aggressor_log,
+                lang: appState.lang
+            }));
+        }
+
+        /* ==============================================================================
+           FRANK SUÁREZ METABOLIC TESTS LOGIC
+           ============================================================================== */
+        function submitNervousSystemQuiz(e) {
+            e.preventDefault();
+            const q1 = parseInt(document.querySelector('input[name="q1"]:checked').value);
+            const q2 = parseInt(document.querySelector('input[name="q2"]:checked').value);
+            const q3 = parseInt(document.querySelector('input[name="q3"]:checked').value);
+            const q4 = parseInt(document.querySelector('input[name="q4"]:checked').value);
+            const q5 = parseInt(document.querySelector('input[name="q5"]:checked').value);
+
+            const totalYes = q1 + q2 + q3 + q4 + q5;
+            const resCard = document.getElementById('quiz-result-card');
+            const isEs = appState.lang === 'es';
+
+            if (totalYes === 0) {
+                appState.nervous_system = 'Passive';
+                resCard.className = "p-4 rounded-xl border border-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-200 text-xs space-y-2";
+                resCard.innerHTML = `
+                    <h4 class="font-bold text-sm flex items-center space-x-2">
+                        <i class="fa-solid fa-circle-check text-emerald-600"></i>
+                        <span>${TRANSLATIONS[appState.lang].res_passive_title}</span>
+                    </h4>
+                    <p>${TRANSLATIONS[appState.lang].res_passive_desc}</p>
+                `;
+            } else {
+                appState.nervous_system = 'Active';
+                const desc = TRANSLATIONS[appState.lang].res_active_desc.replace('{count}', totalYes);
+                resCard.className = "p-4 rounded-xl border border-amber-300 bg-amber-50 dark:bg-amber-950/40 text-amber-900 dark:text-amber-200 text-xs space-y-2";
+                resCard.innerHTML = `
+                    <h4 class="font-bold text-sm flex items-center space-x-2">
+                        <i class="fa-solid fa-bolt text-amber-500"></i>
+                        <span>${TRANSLATIONS[appState.lang].res_active_title}</span>
+                    </h4>
+                    <p>${desc}</p>
+                `;
+            }
+
+            resCard.classList.remove('hidden');
+            saveConfiguration();
+            renderHeaderProfile();
+            renderDashboard();
+            setFormDefaults();
+            showToast(isEs ? "¡Perfil alimentario actualizado!" : "Metabolic profile updated!");
+        }
+
+        function switchAggressorTest(mode) {
+            const btnPulse = document.getElementById('btn-mode-pulse');
+            const btnGlucose = document.getElementById('btn-mode-glucose');
+            const formPulse = document.getElementById('pulse-test-form');
+            const formGlucose = document.getElementById('glucose-test-form');
+
+            if (mode === 'pulse') {
+                btnPulse.className = "flex-1 py-2 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm transition";
+                btnGlucose.className = "flex-1 py-2 rounded-lg text-slate-500 hover:text-slate-900 dark:hover:text-white transition";
+                formPulse.classList.remove('hidden');
+                formGlucose.classList.add('hidden');
+            } else {
+                btnGlucose.className = "flex-1 py-2 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm transition";
+                btnPulse.className = "flex-1 py-2 rounded-lg text-slate-500 hover:text-slate-900 dark:hover:text-white transition";
+                formGlucose.classList.remove('hidden');
+                formPulse.classList.add('hidden');
+            }
+        }
+
+        function submitPulseTest(e) {
+            e.preventDefault();
+            const food = document.getElementById('pulse-food').value.trim();
+            const before = parseInt(document.getElementById('pulse-before').value);
+            const after = parseInt(document.getElementById('pulse-after').value);
+            const delta = after - before;
+            const isAggressor = delta >= 4;
+
+            const entry = {
+                id: Date.now(),
+                food: food,
+                type: 'Pulse',
+                valBefore: before,
+                valAfter: after,
+                delta: delta,
+                isAggressor: isAggressor,
+                date: new Date().toISOString()
+            };
+
+            if (isAggressor) {
+                appState.aggressor_log.unshift(entry);
+                // Also add to PAM Log automatically
+                appState.pam_log.unshift({
+                    id: Date.now(),
+                    date: entry.date,
+                    food: `[Agresor detectado - Pulso +${delta}ppm] ${food}`,
+                    reaction: 'Mala',
+                    notes: `Prueba de pulso: Reposo ${before} ppm -> Post ${after} ppm.`
+                });
+                saveConfiguration();
+                renderAggressorLog();
+                renderPamHistory();
+                showToast(TRANSLATIONS[appState.lang].aggressor_confirmed);
+            } else {
+                showToast(TRANSLATIONS[appState.lang].aggressor_safe);
+            }
+
+            document.getElementById('pulse-food').value = '';
+            document.getElementById('pulse-before').value = '';
+            document.getElementById('pulse-after').value = '';
+        }
+
+        function submitGlucoseTest(e) {
+            e.preventDefault();
+            const food = document.getElementById('glucose-food').value.trim();
+            const base = parseInt(document.getElementById('glucose-base').value);
+            const post2h = parseInt(document.getElementById('glucose-2h').value);
+            const delta = post2h - base;
+            const isAggressor = post2h > 130 || delta >= 35;
+
+            const entry = {
+                id: Date.now(),
+                food: food,
+                type: 'Glucose',
+                valBefore: base,
+                valAfter: post2h,
+                delta: delta,
+                isAggressor: isAggressor,
+                date: new Date().toISOString()
+            };
+
+            if (isAggressor) {
+                appState.aggressor_log.unshift(entry);
+                appState.pam_log.unshift({
+                    id: Date.now(),
+                    date: entry.date,
+                    food: `[Agresor detectado - Glucosa ${post2h}mg/dL] ${food}`,
+                    reaction: 'Mala',
+                    notes: `Prueba de Glucómetro: Base ${base} mg/dL -> 2h Post ${post2h} mg/dL.`
+                });
+                saveConfiguration();
+                renderAggressorLog();
+                renderPamHistory();
+                showToast(TRANSLATIONS[appState.lang].aggressor_confirmed);
+            } else {
+                showToast(TRANSLATIONS[appState.lang].aggressor_safe);
+            }
+
+            document.getElementById('glucose-food').value = '';
+            document.getElementById('glucose-base').value = '';
+            document.getElementById('glucose-2h').value = '';
+        }
+
+        function clearAggressorLog() {
+            if (confirm(appState.lang === 'es' ? '¿Borrar historial de alimentos agresores?' : 'Clear aggressor foods list?')) {
+                appState.aggressor_log = [];
+                saveConfiguration();
+                renderAggressorLog();
+            }
+        }
+
+        function renderAggressorLog() {
+            const container = document.getElementById('aggressor-log-container');
+            const entries = appState.aggressor_log || [];
+
+            if (entries.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-6 text-slate-400 text-xs">
+                        <i class="fa-solid fa-shield-halved text-2xl mb-2 opacity-40"></i>
+                        <p>${TRANSLATIONS[appState.lang].empty_aggressors}</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = entries.map(item => `
+                <div class="p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/60 flex flex-col justify-between space-y-2">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <h4 class="text-xs font-bold text-rose-950 dark:text-rose-200">${item.food}</h4>
+                            <span class="text-[10px] text-rose-600 dark:text-rose-400 font-semibold uppercase">${item.type === 'Pulse' ? 'Prueba Pulso' : 'Prueba Glucosa'}</span>
+                        </div>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-rose-600 text-white">
+                            ${item.type === 'Pulse' ? `+${item.delta} ppm` : `${item.valAfter} mg/dL`}
+                        </span>
+                    </div>
+                    <p class="text-[11px] text-slate-600 dark:text-slate-300">
+                        ${item.type === 'Pulse' ? `Base: ${item.valBefore} ppm ➔ Post: ${item.valAfter} ppm` : `Base: ${item.valBefore} mg/dL ➔ 2 hrs: ${item.valAfter} mg/dL`}
+                    </p>
+                </div>
+            `).join('');
+        }
+
+        // Add render call to setLanguage
+        const origSetLanguage = setLanguage;
+        setLanguage = function(lang) {
+            origSetLanguage(lang);
+            renderAggressorLog();
+        };
+
+        let distributionChart = null;
+
+        function loadConfiguration() {
+            const saved = localStorage.getItem('biodiet_config');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    appState = { ...appState, ...parsed };
+                } catch (e) {
+                    console.error("Error reading saved config", e);
+                }
+            }
+        }
+
+        function saveConfiguration() {
+            localStorage.setItem('biodiet_config', JSON.stringify({
+                blood_type: appState.blood_type,
+                nervous_system: appState.nervous_system,
+                pam_log: appState.pam_log,
+                lang: appState.lang
+            }));
+        }
+
+        /* ==============================================================================
+           4. UI & LANGUAGE RENDERERS
+           ============================================================================== */
+        function setLanguage(lang) {
+            appState.lang = lang;
+            saveConfiguration();
+            
+            // Toggle dropdown indicators
+            document.getElementById('current-lang-flag').textContent = lang === 'es' ? '🇲🇽' : '🇺🇸';
+            document.getElementById('current-lang-label').textContent = lang === 'es' ? 'MX (ES)' : 'US (EN)';
+            document.getElementById('check-es').classList.toggle('hidden', lang !== 'es');
+            document.getElementById('check-en').classList.toggle('hidden', lang !== 'en');
+            document.getElementById('lang-dropdown').classList.add('hidden');
+
+            // Translate static elements
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (TRANSLATIONS[lang] && TRANSLATIONS[lang][key]) {
+                    el.textContent = TRANSLATIONS[lang][key];
+                }
+            });
+
+            // Update search placeholder safely
+            const searchInput = document.getElementById('food-search-input');
+            if (searchInput && TRANSLATIONS[lang] && TRANSLATIONS[lang].search_placeholder) {
+                searchInput.placeholder = TRANSLATIONS[lang].search_placeholder;
+            }
+
+            // Re-render UI components
+            populateCategoryFilter();
+            renderHeaderProfile();
+            renderDashboard();
+            renderFoodList();
+            renderPamHistory();
+        }
+
+        function toggleLangMenu() {
+            document.getElementById('lang-dropdown').classList.toggle('hidden');
+        }
+
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.nav-tab').forEach(el => {
+                el.classList.remove('text-brand-600', 'dark:text-rose-400', 'bg-brand-50', 'dark:bg-slate-700/50');
+                el.classList.add('text-slate-600', 'dark:text-slate-400');
+            });
+
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-btn-${tabId}`);
+            activeBtn.classList.add('text-brand-600', 'dark:text-rose-400', 'bg-brand-50', 'dark:bg-slate-700/50');
+            activeBtn.classList.remove('text-slate-600', 'dark:text-slate-400');
+        }
+
+        function showToast(msg) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'pointer-events-auto bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-3 rounded-xl shadow-xl text-xs font-bold flex items-center space-x-2 transition-all transform duration-300 opacity-0 translate-y-2';
+            toast.innerHTML = `<i class="fa-solid fa-circle-check text-brand-500"></i> <span>${msg}</span>`;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('opacity-0', 'translate-y-2');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        /* ==============================================================================
+           5. DASHBOARD & GUIDANCE LOGIC
+           ============================================================================== */
+        function renderHeaderProfile() {
+            const bt = appState.blood_type;
+            const ns = appState.nervous_system;
+            const nsText = ns === 'Passive' ? (appState.lang === 'es' ? 'Pasivo' : 'Passive') : 
+                           ns === 'Active' ? (appState.lang === 'es' ? 'Activo' : 'Active') : 
+                           (appState.lang === 'es' ? 'Equilibrado' : 'Balanced');
+
+            document.getElementById('header-profile-badge').textContent = `Tipo ${bt}`;
+            document.getElementById('header-ns-badge').textContent = nsText;
+            document.getElementById('dash-blood-type').textContent = `Tipo ${bt}`;
+            document.getElementById('dash-ns-type').textContent = nsText;
+            
+            const greeting = TRANSLATIONS[appState.lang].dash_greeting.replace('{bt}', bt);
+            document.getElementById('dash-greeting').textContent = greeting;
+        }
+
+        function renderDashboard() {
+            const bt = appState.blood_type;
+            const data = FOOD_DATABASE[bt] || FOOD_DATABASE["O"];
+
+            let countMed = 0, countNeu = 0, countAvo = 0;
+
+            Object.values(data.Medicinal).forEach(arr => countMed += arr.length);
+            Object.values(data.Neutral).forEach(arr => countNeu += arr.length);
+            Object.values(data.Avoid).forEach(arr => countAvo += arr.length);
+
+            const total = countMed + countNeu + countAvo;
+            document.getElementById('dash-total-foods').textContent = total;
+            document.getElementById('cnt-medicinal').textContent = countMed;
+            document.getElementById('cnt-neutral').textContent = countNeu;
+            document.getElementById('cnt-avoid').textContent = countAvo;
+
+            // Render Chart
+            renderChart(countMed, countNeu, countAvo);
+
+            // Render Profile Specific Guidance Tips
+            renderGuidanceTips();
+        }
+
+        function renderChart(med, neu, avo) {
+            const ctx = document.getElementById('foodDistributionChart').getContext('2d');
+            
+            if (distributionChart) {
+                distributionChart.destroy();
+            }
+
+            const isDark = document.documentElement.classList.contains('dark');
+
+            distributionChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: [
+                        appState.lang === 'es' ? 'Medicinales' : 'Medicinal',
+                        appState.lang === 'es' ? 'Neutros' : 'Neutral',
+                        appState.lang === 'es' ? 'Evitar' : 'Avoid'
+                    ],
+                    datasets: [{
+                        data: [med, neu, avo],
+                        backgroundColor: ['#10b981', '#f59e0b', '#ef4444'],
+                        borderWidth: 2,
+                        borderColor: isDark ? '#1e293b' : '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ` ${context.label}: ${context.raw} items`;
+                                }
+                            }
+                        }
+                    },
+                    cutout: '75%'
+                }
+            });
+        }
+
+        function renderGuidanceTips() {
+            const container = document.getElementById('profile-tips-container');
+            const bt = appState.blood_type;
+            const ns = appState.nervous_system;
+            const isEs = appState.lang === 'es';
+
+            let tips = [];
+
+            if (bt === 'O') {
+                tips.push({
+                    title: isEs ? "Proteína de Alta Calidad" : "High Quality Protein",
+                    desc: isEs ? "Tu metabolismo ancestral procesa eficientemente carnes rojas magras, pescado y aves. Minimiza el trigo y los lácteos." : "Your ancestral metabolism efficiently processes lean red meat, poultry, and fish. Minimize wheat and dairy."
+                });
+                tips.push({
+                    title: isEs ? "Ejercicio Intenso" : "Intense Physical Exercise",
+                    desc: isEs ? "El Tipo O responde excelente al ejercicio físico vigoroso para quemar el estrés y mantener el equilibrio metabólico." : "Type O responds best to vigorous exercise to burn stress and maintain metabolic balance."
+                });
+            } else if (bt === 'A') {
+                tips.push({
+                    title: isEs ? "Dieta Predominantemente Vegetal" : "Plant-based Focused Diet",
+                    desc: isEs ? "Tu aparato digestivo florece con vegetales frescos, legumbres, tofu y granos enteros como el sarraceno y amaranto." : "Your digestive system thrives on fresh vegetables, legumes, tofu, and whole grains like buckwheat and amaranth."
+                });
+                tips.push({
+                    title: isEs ? "Manejo del Estrés Suave" : "Calming Stress Relief",
+                    desc: isEs ? "Actividades como yoga, tai chi o caminatas moderadas benefician la relajación del perfil Tipo A." : "Activities such as yoga, tai chi, or gentle walks benefit relaxation for Type A profiles."
+                });
+            } else {
+                tips.push({
+                    title: isEs ? "Dieta Variada y Equilibrada" : "Balanced & Diverse Nutrition",
+                    desc: isEs ? "Combina moderadamente vegetales, carnes magras y lácteos tolerados evitando alimentos procesados." : "Combine clean meats, greens, and selected dairy while avoiding processed options."
+                });
+            }
+
+            if (ns === 'Passive') {
+                tips.push({
+                    title: isEs ? "Sistema Parasimpático Dominante" : "Parasympathetic Dominance",
+                    desc: isEs ? "Mayor producción de ácidos gástricos. Tolerancia óptima a desayunos consistentes con proteína vegetal o animal." : "Higher gastric acid production. Optimal tolerance for substantial, protein-rich meals."
+                });
+            } else if (ns === 'Active') {
+                tips.push({
+                    title: isEs ? "Sistema Simpático Activo" : "Sympathetic Dominance",
+                    desc: isEs ? "Se beneficia de porciones moderadas, vegetales alcalinizantes y comidas ligeras con bajo contenido de grasa saturada." : "Benefits from lighter meals, alkalizing vegetables, and lower saturated fats."
+                });
+            }
+
+            container.innerHTML = tips.map(t => `
+                <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-700/40 border border-slate-100 dark:border-slate-700/60">
+                    <h4 class="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider mb-1">${t.title}</h4>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">${t.desc}</p>
+                </div>
+            `).join('');
+        }
+
+        /* ==============================================================================
+           6. FOOD DATABASE SEARCH & FILTER ENGINE
+           ============================================================================== */
+        function populateCategoryFilter() {
+            const select = document.getElementById('filter-category');
+            const isEs = appState.lang === 'es';
+            const currVal = select.value;
+
+            select.innerHTML = `<option value="ALL">${TRANSLATIONS[appState.lang].opt_all_categories}</option>`;
+
+            Object.keys(CATEGORY_NAMES).forEach(catKey => {
+                const label = CATEGORY_NAMES[catKey][appState.lang] || catKey;
+                select.innerHTML += `<option value="${catKey}">${label}</option>`;
+            });
+
+            select.value = currVal || "ALL";
+        }
+
+        function setSearchFilter(keyword) {
+            document.getElementById('food-search-input').value = keyword;
+            renderFoodList();
+        }
+
+        function clearSearchFilters() {
+            document.getElementById('food-search-input').value = '';
+            document.getElementById('filter-category').value = 'ALL';
+            document.getElementById('filter-status').value = 'ALL';
+            renderFoodList();
+        }
+
+        function getFoodDisplayName(englishName) {
+            if (appState.lang === 'es' && SPANISH_FOOD_TRANSLATIONS[englishName]) {
+                return SPANISH_FOOD_TRANSLATIONS[englishName];
+            }
+            return englishName;
+        }
+
+        function renderFoodList() {
+            const bt = appState.blood_type;
+            const data = FOOD_DATABASE[bt] || FOOD_DATABASE["O"];
+            const searchVal = document.getElementById('food-search-input').value.toLowerCase().trim();
+            const catVal = document.getElementById('filter-category').value;
+            const statusVal = document.getElementById('filter-status').value;
+            const grid = document.getElementById('food-results-grid');
+
+            let results = [];
+
+            // Flat process database items
+            ['Medicinal', 'Neutral', 'Avoid'].forEach(status => {
+                if (statusVal !== 'ALL' && statusVal !== status) return;
+
+                const categoryMap = data[status];
+                Object.keys(categoryMap).forEach(categoryKey => {
+                    if (catVal !== 'ALL' && catVal !== categoryKey) return;
+
+                    categoryMap[categoryKey].forEach(foodItem => {
+                        const esName = getFoodDisplayName(foodItem);
+                        const matchSearch = foodItem.toLowerCase().includes(searchVal) || esName.toLowerCase().includes(searchVal);
+                        
+                        if (matchSearch) {
+                            results.push({
+                                name: appState.lang === 'es' ? esName : foodItem,
+                                originalName: foodItem,
+                                category: categoryKey,
+                                status: status
+                            });
+                        }
+                    });
+                });
+            });
+
+            document.getElementById('results-count').textContent = results.length;
+
+            if (results.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-12 text-slate-400">
+                        <i class="fa-solid fa-utensils text-4xl mb-3 opacity-40"></i>
+                        <p class="text-sm font-semibold">${appState.lang === 'es' ? 'No se encontraron alimentos con estos filtros.' : 'No foods matching criteria found.'}</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const isEs = appState.lang === 'es';
+
+            grid.innerHTML = results.map(item => {
+                let badgeClass = '';
+                let statusLabel = '';
+                let icon = '';
+
+                if (item.status === 'Medicinal') {
+                    badgeClass = 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800';
+                    statusLabel = isEs ? 'Medicinal' : 'Medicinal';
+                    icon = 'fa-leaf';
+                } else if (item.status === 'Neutral') {
+                    badgeClass = 'bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 border-amber-300 dark:border-amber-800';
+                    statusLabel = isEs ? 'Neutro' : 'Neutral';
+                    icon = 'fa-scale-balanced';
+                } else {
+                    badgeClass = 'bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300 border-rose-300 dark:border-rose-800';
+                    statusLabel = isEs ? 'Evitar' : 'Avoid';
+                    icon = 'fa-ban';
+                }
+
+                const catTranslated = CATEGORY_NAMES[item.category] ? CATEGORY_NAMES[item.category][appState.lang] : item.category;
+
+                return `
+                    <div class="bg-white dark:bg-slate-800 rounded-xl p-4 border border-slate-200 dark:border-slate-700/80 shadow-sm flex flex-col justify-between hover:shadow-md transition">
+                        <div class="space-y-2">
+                            <div class="flex items-start justify-between gap-2">
+                                <h4 class="font-bold text-sm text-slate-800 dark:text-slate-100 leading-tight">${item.name}</h4>
+                                <span class="px-2.5 py-1 rounded-full text-[10px] font-extrabold border uppercase tracking-wider flex items-center space-x-1 ${badgeClass}">
+                                    <i class="fa-solid ${icon} text-[9px]"></i>
+                                    <span>${statusLabel}</span>
+                                </span>
+                            </div>
+                            <span class="text-[11px] text-slate-400 dark:text-slate-500 font-medium block">
+                                ${catTranslated}
+                            </span>
+                        </div>
+                        <div class="mt-3 pt-2.5 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between text-[10px] text-slate-400">
+                            <span>Tipo Sangre: <strong>${bt}</strong></span>
+                            <button onclick="quickLogFood('${item.name.replace(/'/g, "\\'")}')" class="text-brand-600 dark:text-rose-400 hover:underline font-bold">
+                                + ${isEs ? 'Registrar' : 'Log'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        /* ==============================================================================
+           7. PAM LOGIC & ENTRY MANAGEMENT
+           ============================================================================== */
+        function savePamEntry(e) {
+            e.preventDefault();
+            const date = document.getElementById('pam-date').value;
+            const food = document.getElementById('pam-food').value.trim();
+            const reaction = document.getElementById('pam-reaction').value;
+            const notes = document.getElementById('pam-notes').value.trim();
+
+            if (!food || !date) return;
+
+            const newEntry = {
+                id: Date.now(),
+                date: date,
+                food: food,
+                reaction: reaction,
+                notes: notes
+            };
+
+            appState.pam_log.unshift(newEntry);
+            saveConfiguration();
+            renderPamHistory();
+            
+            // Clear form inputs except date
+            document.getElementById('pam-food').value = '';
+            document.getElementById('pam-notes').value = '';
+            showToast(TRANSLATIONS[appState.lang].toast_saved_pam);
+        }
+
+        function quickLogFood(foodName) {
+            switchTab('pam');
+            document.getElementById('pam-food').value = foodName;
+            document.getElementById('pam-notes').focus();
+        }
+
+        function clearPamHistory() {
+            if (confirm(appState.lang === 'es' ? '¿Eliminar todos los registros acumulados?' : 'Clear all history entries?')) {
+                appState.pam_log = [];
+                saveConfiguration();
+                renderPamHistory();
+                showToast(TRANSLATIONS[appState.lang].toast_cleared_pam);
+            }
+        }
+
+        function renderPamHistory() {
+            const container = document.getElementById('pam-history-list');
+            const entries = appState.pam_log || [];
+
+            if (entries.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-10 text-slate-400 text-xs">
+                        <i class="fa-solid fa-folder-open text-3xl mb-2 opacity-40"></i>
+                        <p>${TRANSLATIONS[appState.lang].empty_pam}</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = entries.map(entry => {
+                let badgeClass = 'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300';
+                if (entry.reaction === 'Excelente' || entry.reaction === 'Buena') {
+                    badgeClass = 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300';
+                } else if (entry.reaction === 'Regular') {
+                    badgeClass = 'bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300';
+                } else if (entry.reaction === 'Mala') {
+                    badgeClass = 'bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300';
+                }
+
+                const formattedDate = new Date(entry.date).toLocaleString(appState.lang === 'es' ? 'es-MX' : 'en-US', {
+                    dateStyle: 'short',
+                    timeStyle: 'short'
+                });
+
+                return `
+                    <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-700/50 border border-slate-100 dark:border-slate-700 flex flex-col justify-between space-y-2">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-900 dark:text-white">${entry.food}</h4>
+                                <span class="text-[10px] text-slate-400">${formattedDate}</span>
+                            </div>
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${badgeClass}">
+                                ${entry.reaction}
+                            </span>
+                        </div>
+                        ${entry.notes ? `<p class="text-xs text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 p-2 rounded-lg border border-slate-100 dark:border-slate-700">${entry.notes}</p>` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        /* ==============================================================================
+           8. PROFILE SAVE LOGIC & INITIALIZATION
+           ============================================================================== */
+        function saveProfileSettings(e) {
+            e.preventDefault();
+            const bt = document.querySelector('input[name="blood_type"]:checked').value;
+            const ns = document.querySelector('input[name="nervous_system"]:checked').value;
+
+            appState.blood_type = bt;
+            appState.nervous_system = ns;
+
+            saveConfiguration();
+            renderHeaderProfile();
+            renderDashboard();
+            renderFoodList();
+            showToast(TRANSLATIONS[appState.lang].toast_saved_config);
+        }
+
+        function setFormDefaults() {
+            // Radio Blood Type
+            const btRadio = document.querySelector(`input[name="blood_type"][value="${appState.blood_type}"]`);
+            if (btRadio) btRadio.checked = true;
+
+            // Radio Nervous System
+            const nsRadio = document.querySelector(`input[name="nervous_system"][value="${appState.nervous_system}"]`);
+            if (nsRadio) nsRadio.checked = true;
+
+            // Default Datetime for PAM
+            const now = new Date();
+            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+            document.getElementById('pam-date').value = now.toISOString().slice(0, 16);
+        }
+
+        // Window Load Handler
+        window.onload = function () {
+            loadConfiguration();
+            setFormDefaults();
+            setLanguage(appState.lang || 'es');
+        };
+    </script>
+</body>
+</html>
